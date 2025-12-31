@@ -1,0 +1,21 @@
+{
+  "device": "cpu",
+  "baseline": {
+    "final_loss": 0.0005857683718204498,
+    "final_accuracy": 0.9794,
+    "convergence_slope": 0.0003309357519985489,
+    "avg_max_flow": null,
+    "peak_memory_mb": null
+  },
+  "pfn": {
+    "final_loss": 0.004188308492302895,
+    "final_accuracy": 0.98,
+    "convergence_slope": 0.0003477903345559514,
+    "avg_max_flow": 0.34857950933379317,
+    "peak_memory_mb": null
+  },
+  "improvement": {
+    "accuracy_diff": 0.0005999999999999339,
+    "convergence_improvement": 1.6854582557402503e-05
+  }
+}
