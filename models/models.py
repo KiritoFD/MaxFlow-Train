@@ -39,28 +39,26 @@ class PartitionedLinear(nn.Module):
 
 class PartitionedMLP(nn.Module):
     """
-    Enhanced MLP for MNIST with sub-block partitioning, BatchNorm, and Dropout.
+    Enhanced MLP for MNIST with sub-block partitioning and Dropout.
     - Input: 784
-    - Hidden1: 512 (4 blocks of 128) -> BN -> ReLU -> Dropout
-    - Hidden2: 256 (2 blocks of 128) -> BN -> ReLU -> Dropout
+    - Hidden1: 512 (4 blocks of 128) -> ReLU -> Dropout
+    - Hidden2: 256 (2 blocks of 128) -> ReLU -> Dropout
     - Output: 10
     """
     
     def __init__(self):
         super().__init__()
         self.layer1 = PartitionedLinear(784, 512, num_blocks=4)
-        self.bn1 = nn.BatchNorm1d(512)
         self.dropout1 = nn.Dropout(0.2)
         self.layer2 = PartitionedLinear(512, 256, num_blocks=2)
-        self.bn2 = nn.BatchNorm1d(256)
         self.dropout2 = nn.Dropout(0.2)
         self.layer3 = nn.Linear(256, 10)
         self.relu = nn.ReLU()
     
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.view(-1, 784)
-        x = self.dropout1(self.relu(self.bn1(self.layer1(x))))
-        x = self.dropout2(self.relu(self.bn2(self.layer2(x))))
+        x = self.dropout1(self.relu(self.layer1(x)))
+        x = self.dropout2(self.relu(self.layer2(x)))
         return self.layer3(x)
     
     def get_all_block_gradients(self) -> Dict[str, List[torch.Tensor]]:
@@ -77,18 +75,17 @@ class PartitionedMLP(nn.Module):
         for i in range(4): groups.append({'params': self.layer1.get_block_params(i), 'name': f'layer1_block{i}', 'lr': 0.001})
         for i in range(2): groups.append({'params': self.layer2.get_block_params(i), 'name': f'layer2_block{i}', 'lr': 0.001})
         groups.append({'params': list(self.layer3.parameters()), 'name': 'layer3_block0', 'lr': 0.001})
-        groups.append({'params': list(self.bn1.parameters()) + list(self.bn2.parameters()), 'name': 'bn_fixed', 'lr': 0.001})
         return groups
 
 
 class BottleneckMLP(nn.Module):
     """
     Hourglass MLP with artificial bottleneck layers.
-    Architecture: 784 -> 256 -> 64 -> 16 -> 64 -> 256 -> 10
-    The narrow 16-neuron layer creates a natural information bottleneck.
+    Architecture: 784 -> 256 -> 64 -> 8 -> 64 -> 256 -> 10
+    The narrow 8-neuron layer (reduced from 16) creates a strong information bottleneck.
     """
     
-    def __init__(self, bottleneck_width: int = 16):
+    def __init__(self, bottleneck_width: int = 8):
         super().__init__()
         self.enc1, self.enc2, self.enc3 = nn.Linear(784, 256), nn.Linear(256, 64), nn.Linear(64, bottleneck_width)
         self.dec1, self.dec2, self.output = nn.Linear(bottleneck_width, 64), nn.Linear(64, 256), nn.Linear(256, 10)
@@ -173,20 +170,17 @@ class PartitionedCNN(nn.Module):
         super().__init__()
         self.num_blocks = num_blocks
         self.conv1 = ChannelPartitionedConv2d(3, 64, 3, padding=1, num_blocks=num_blocks)
-        self.bn1 = nn.BatchNorm2d(64)
         self.conv2 = ChannelPartitionedConv2d(64, 128, 3, padding=1, num_blocks=num_blocks)
-        self.bn2 = nn.BatchNorm2d(128)
         self.conv3 = ChannelPartitionedConv2d(128, 128, 3, padding=1, num_blocks=num_blocks)
-        self.bn3 = nn.BatchNorm2d(128)
         self.relu, self.pool, self.gap = nn.ReLU(), nn.MaxPool2d(2), nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Linear(128, num_classes)
         self.layer_names = ['conv1', 'conv2', 'conv3']
         self._layers = [self.conv1, self.conv2, self.conv3]
     
     def forward(self, x):
-        x = self.pool(self.relu(self.bn1(self.conv1(x))))
-        x = self.pool(self.relu(self.bn2(self.conv2(x))))
-        x = self.pool(self.relu(self.bn3(self.conv3(x))))
+        x = self.pool(self.relu(self.conv1(x)))
+        x = self.pool(self.relu(self.conv2(x)))
+        x = self.pool(self.relu(self.conv3(x)))
         return self.fc(self.gap(x).view(x.size(0), -1))
     
     def get_all_block_gradients(self) -> Dict[str, List[torch.Tensor]]:
@@ -208,14 +202,13 @@ class PartitionedCNN(nn.Module):
             for i, block in enumerate(layer.blocks):
                 groups.append({'params': list(block.parameters()), 'name': f'{name}_block{i}', 'lr': 0.001})
         groups.append({'params': list(self.fc.parameters()), 'name': 'fc_block0', 'lr': 0.001})
-        groups.append({'params': list(self.bn1.parameters()) + list(self.bn2.parameters()) + list(self.bn3.parameters()), 'name': 'bn_fixed', 'lr': 0.001})
         return groups
 
 
 class DeepPartitionedCNN(nn.Module):
     """
     真正的PFN主场：既深（梯度消失），又宽（分块路由）。
-    无残差连接，制造梯度消失瓶颈让PFN发挥作用。
+    无残差连接，无BatchNorm，制造梯度消失瓶颈让PFN发挥作用。
     """
     
     def __init__(self, num_layers: int = 12, num_classes: int = 10, num_blocks: int = 4):
@@ -225,18 +218,15 @@ class DeepPartitionedCNN(nn.Module):
         
         # 初始层
         self.conv_in = ChannelPartitionedConv2d(3, 32, 3, padding=1, num_blocks=num_blocks)
-        self.bn_in = nn.BatchNorm2d(32)
         
         # 中间深层
         self.hidden_layers = nn.ModuleList()
-        self.bns = nn.ModuleList()
         
         in_ch, out_ch = 32, 32
         for i in range(num_layers - 1):
             if i > 0 and i % 4 == 0:
                 out_ch = min(in_ch * 2, 128)
             self.hidden_layers.append(ChannelPartitionedConv2d(in_ch, out_ch, 3, padding=1, num_blocks=num_blocks))
-            self.bns.append(nn.BatchNorm2d(out_ch))
             in_ch = out_ch
         
         self.pool = nn.AdaptiveAvgPool2d(1)
@@ -247,10 +237,10 @@ class DeepPartitionedCNN(nn.Module):
         self.layer_names = ['conv_in'] + [f'conv_{i}' for i in range(len(self.hidden_layers))] + ['classifier']
     
     def forward(self, x):
-        x = self.relu(self.bn_in(self.conv_in(x)))
+        x = self.relu(self.conv_in(x))
         
-        for i, (conv, bn) in enumerate(zip(self.hidden_layers, self.bns)):
-            x = self.relu(bn(conv(x)))
+        for i, conv in enumerate(self.hidden_layers):
+            x = self.relu(conv(x))
             if i > 0 and i % 4 == 0:
                 x = self.maxpool(x)
         
@@ -296,28 +286,23 @@ class DeepPartitionedCNN(nn.Module):
         
         groups.append({'params': list(self.classifier.parameters()), 'name': 'classifier_block0', 'lr': 0.001})
         
-        # BN参数不参与PFN调整
-        bn_params = list(self.bn_in.parameters())
-        for bn in self.bns:
-            bn_params.extend(list(bn.parameters()))
-        groups.append({'params': bn_params, 'name': 'bn_fixed', 'lr': 0.001})
-        
         return groups
 
 
 class BottleneckCNN(nn.Module):
     """
-    CNN with bottleneck architecture for CIFAR-10.
+    CNN with strong bottleneck architecture for CIFAR-10.
     Creates artificial information bottleneck to test PFN.
+    No BatchNorm, reduced bottleneck width (4 instead of 8).
     """
     
-    def __init__(self, bottleneck_channels: int = 8, num_classes: int = 10):
+    def __init__(self, bottleneck_channels: int = 4, num_classes: int = 10):
         super().__init__()
-        self.enc1 = nn.Sequential(nn.Conv2d(3, 64, 3, padding=1), nn.BatchNorm2d(64), nn.ReLU(), nn.MaxPool2d(2))
-        self.enc2 = nn.Sequential(nn.Conv2d(64, 128, 3, padding=1), nn.BatchNorm2d(128), nn.ReLU(), nn.MaxPool2d(2))
-        self.bottleneck = nn.Sequential(nn.Conv2d(128, bottleneck_channels, 1), nn.BatchNorm2d(bottleneck_channels), nn.ReLU())
-        self.dec1 = nn.Sequential(nn.Conv2d(bottleneck_channels, 128, 3, padding=1), nn.BatchNorm2d(128), nn.ReLU())
-        self.dec2 = nn.Sequential(nn.Conv2d(128, 256, 3, padding=1), nn.BatchNorm2d(256), nn.ReLU(), nn.AdaptiveAvgPool2d(1))
+        self.enc1 = nn.Sequential(nn.Conv2d(3, 64, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2))
+        self.enc2 = nn.Sequential(nn.Conv2d(64, 128, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2))
+        self.bottleneck = nn.Sequential(nn.Conv2d(128, bottleneck_channels, 1), nn.ReLU())
+        self.dec1 = nn.Sequential(nn.Conv2d(bottleneck_channels, 128, 3, padding=1), nn.ReLU())
+        self.dec2 = nn.Sequential(nn.Conv2d(128, 256, 3, padding=1), nn.ReLU(), nn.AdaptiveAvgPool2d(1))
         self.classifier = nn.Linear(256, num_classes)
         self.layer_names = ['enc1', 'enc2', 'bottleneck', 'dec1', 'dec2', 'classifier']
         self._layers = [self.enc1, self.enc2, self.bottleneck, self.dec1, self.dec2, self.classifier]
@@ -355,7 +340,6 @@ def get_model(scenario: str, dataset: str, **kwargs) -> nn.Module:
         elif scenario == 'bottleneck': 
             return BottleneckCNN(bottleneck_channels=kwargs.get('bottleneck_width', 4), num_classes=num_classes)
         elif scenario == 'deep': 
-            # 使用新的DeepPartitionedCNN，支持分块路由
             return DeepPartitionedCNN(num_layers=kwargs.get('num_layers', 12), num_classes=num_classes, num_blocks=4)
     
     raise ValueError(f"Unknown scenario '{scenario}' or dataset '{dataset}'")

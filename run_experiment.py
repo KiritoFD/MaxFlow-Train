@@ -18,18 +18,18 @@ CONFIG = {
         'full': {'epochs': 20, 'batch': 64},
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
-            {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 8},
+            {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 4},
             {'name': '2.Deep', 'scenario': 'deep', 'num_layers': 15, 'lr': 0.0005},
             {'name': '3.Noisy', 'scenario': 'standard', 'pixel_noise': 0.3, 'label_noise': 0.15, 'samples': 100},
         ]
     },
     'cifar10': {
-        'fast': {'epochs': 10, 'batch': 128},
-        'full': {'epochs': 20, 'batch': 128},
+        'fast': {'epochs': 10, 'batch': 64},
+        'full': {'epochs': 30, 'batch': 128},
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
-            {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 4},
-            {'name': '2.Deep', 'scenario': 'deep', 'num_layers': 15, 'lr': 0.0005},  # 加深到15层
+            {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},
+            {'name': '2.Deep', 'scenario': 'deep', 'num_layers': 15, 'lr': 0.0005},
             {'name': '3.Noisy', 'scenario': 'standard', 'pixel_noise': 0.2, 'label_noise': 0.1, 'samples': 200},
         ]
     },
@@ -38,14 +38,15 @@ CONFIG = {
         'full': {'epochs': 40, 'batch': 128},
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
-            {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 4},
-            {'name': '2.Deep', 'scenario': 'deep', 'num_layers': 15, 'lr': 0.0005},  # 加深到15层
+            {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},
+            {'name': '2.Deep', 'scenario': 'deep', 'num_layers': 15, 'lr': 0.0005},
             {'name': '3.Noisy', 'scenario': 'standard', 'pixel_noise': 0.15, 'label_noise': 0.1, 'samples': 300},
         ]
     },
 }
-PFN_INTERVAL = 50  # 每50步介入一次，给Adam喘息时间
-BASE_LR = 0.001
+PFN_INTERVAL = 100  # 增加间隔，减少干扰Adam
+PFN_WARMUP_STEPS = 200  # 前200步不介入，让Adam稳定
+BASE_LR = 0.0001
 
 
 # ==================== BASELINE CACHE ====================
@@ -187,16 +188,17 @@ def train_epoch(model, loader, opt, criterion, device, pfn=None, step=0, epoch=0
         loss = criterion(model(x), y)
         loss.backward()
         
-        # PFN分析（降低频率）
-        if pfn and step % PFN_INTERVAL == 0 and step > 0:
+        # PFN分析（warmup后才介入，降低频率）
+        if pfn and step > PFN_WARMUP_STEPS and step % PFN_INTERVAL == 0:
             grads = {k: [t.detach().cpu() for t in v] for k, v in model.get_all_block_gradients().items()}
             
             pfn['gb'].current_epoch = epoch
             pfn['gb'].total_epochs = total_epochs
             
-            cap, _ = pfn['gb'].build_graph(grads)
+            cap, meta = pfn['gb'].build_graph(grads)
             max_flow, cuts, S, T = pfn['solver'].find_min_cut(cap, pfn['gb'].source, pfn['gb'].sink)
             
+            # 计算flow deficit
             total_cap = sum(cap[u][v] for u, v in cuts) if cuts else 1.0
             flow_deficit = (total_cap - max_flow) / (total_cap + 1e-9)
             
@@ -239,10 +241,12 @@ def train_model(config: dict, device, use_pfn=False):
         for g in groups: g['lr'] = lr
         opt = optim.Adam(groups, lr=lr)
         pfn = {
-            'gb': PFNGraphBuilder(),
+            'gb': PFNGraphBuilder(history_size=5),  # 启用历史平滑
             'solver': IncrementalPushRelabel(),
-            'opt': BottleneckOptimizer(opt, lr, base_boost=1.5)  # 温和boost
+            'opt': BottleneckOptimizer(opt, lr, base_boost=1.3, max_boost=3.0, decay_factor=0.95)
         }
+        pfn['gb'].debug = (config['epochs'] <= 15)  # 短实验开启debug
+        pfn['opt'].debug = (config['epochs'] <= 15)
     else:
         opt = optim.Adam(model.parameters(), lr=lr)
         pfn = None
