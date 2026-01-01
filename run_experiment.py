@@ -35,7 +35,7 @@ CONFIG = {
     },
     'cifar100': {
         'fast': {'epochs': 15, 'batch': 128},
-        'full': {'epochs': 40, 'batch': 128},
+        'full': {'epochs': 50, 'batch': 128},
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
             {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},
@@ -316,7 +316,7 @@ def run_scenario(dataset, cfg, epochs, batch, device, results_dir):
     return {'name': name, 'baseline': base_acc, 'pfn': pfn_acc, 'improvement': pfn_acc - base_acc}
 
 
-def run_experiment(dataset='mnist', force_cpu=False, fast=False):
+def run_experiment(dataset='mnist', force_cpu=False, fast=False, scenarios=None):
     device = get_device(force_cpu)
     mode = 'FAST' if fast else 'FULL'
     cfg = CONFIG[dataset]
@@ -332,9 +332,14 @@ def run_experiment(dataset='mnist', force_cpu=False, fast=False):
     print(f"  Device: {device} | Epochs: {epochs} | Batch: {batch}")
     print("=" * 60)
     
+    # 过滤要运行的场景
+    scenario_configs = cfg['scenarios']
+    if scenarios:
+        scenario_configs = [s for s in scenario_configs if s['name'] in scenarios or any(kw in s['name'].lower() for kw in scenarios)]
+    
     results = []
-    for i, scenario_cfg in enumerate(cfg['scenarios']):
-        print(f"\n[{i+1}/{len(cfg['scenarios'])}] {scenario_cfg['name']}")
+    for i, scenario_cfg in enumerate(scenario_configs):
+        print(f"\n[{i+1}/{len(scenario_configs)}] {scenario_cfg['name']}")
         print("-" * 40)
         results.append(run_scenario(dataset, scenario_cfg, epochs, batch, device, results_dir))
         print(f"  >> Base={results[-1]['baseline']:.4f} | PFN={results[-1]['pfn']:.4f} | Δ={results[-1]['improvement']:+.4f}")
@@ -342,7 +347,7 @@ def run_experiment(dataset='mnist', force_cpu=False, fast=False):
     # 汇总
     print("\n" + "=" * 60)
     wins = sum(1 for r in results if r['improvement'] > 0)
-    avg = sum(r['improvement'] for r in results) / len(results)
+    avg = sum(r['improvement'] for r in results) / len(results) if results else 0
     for r in results:
         print(f"{r['name']:<20} {r['baseline']:.4f}  {r['pfn']:.4f}  {r['improvement']:+.4f} {'✓' if r['improvement'] > 0 else '✗'}")
     print("-" * 60)
@@ -355,9 +360,23 @@ def run_experiment(dataset='mnist', force_cpu=False, fast=False):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default='mnist', choices=['mnist', 'cifar10', 'cifar100'])
-    parser.add_argument('--cpu', action='store_true')
-    parser.add_argument('--fast', action='store_true')
+    parser = argparse.ArgumentParser(description='PFN Experiment Runner')
+    parser.add_argument('--dataset', default='mnist', choices=['mnist', 'cifar10', 'cifar100'],
+                        help='Dataset to use (default: mnist)')
+    parser.add_argument('--cpu', action='store_true',
+                        help='Force CPU usage')
+    parser.add_argument('--fast', action='store_true',
+                        help='Use fast (fewer epochs) mode')
+    parser.add_argument('--scenarios', nargs='+', default=None,
+                        help='Specific scenarios to run (e.g., --scenarios 0 1 or --scenarios original bottleneck)')
+    parser.add_argument('--no-cache', action='store_true',
+                        help='Ignore cached baseline results')
+    
     args = parser.parse_args()
-    run_experiment(args.dataset, args.cpu, args.fast)
+    
+    # 处理--no-cache选项
+    if args.no_cache:
+        baseline_cache.cache_dir = './results-baseline-nocache'
+        os.makedirs(baseline_cache.cache_dir, exist_ok=True)
+    
+    run_experiment(args.dataset, args.cpu, args.fast, args.scenarios)
