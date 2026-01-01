@@ -1,0 +1,28 @@
+{
+  "dataset": "mnist",
+  "mode": "FAST",
+  "results": [
+    {
+      "baseline": 0.911,
+      "pfn": 0.9551,
+      "improvement": 0.04409999999999992,
+      "name": "1.Bottleneck",
+      "desc": ""
+    },
+    {
+      "baseline": 0.6304,
+      "pfn": 0.8103,
+      "improvement": 0.17990000000000006,
+      "name": "2.Deep",
+      "desc": ""
+    },
+    {
+      "baseline": 0.8189,
+      "pfn": 0.8149,
+      "improvement": -0.0040000000000000036,
+      "name": "3.Noisy",
+      "desc": ""
+    }
+  ],
+  "avg_improvement": 0.07333333333333332
+}

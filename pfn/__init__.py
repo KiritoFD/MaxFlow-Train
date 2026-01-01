@@ -1,5 +1,6 @@
-from .graph_builder import PFNGraphBuilder
-from .min_cut_solver import DinicSolver
-from .bottleneck_optimizer import BottleneckOptimizer
+from .PFN import PFNGraphBuilder, IncrementalPushRelabel, BottleneckOptimizer
 
-__all__ = ['PFNGraphBuilder', 'DinicSolver', 'BottleneckOptimizer']
+# 向后兼容别名
+DinicSolver = IncrementalPushRelabel
+
+__all__ = ['PFNGraphBuilder', 'IncrementalPushRelabel', 'DinicSolver', 'BottleneckOptimizer']

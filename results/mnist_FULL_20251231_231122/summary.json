@@ -1,0 +1,35 @@
+{
+  "dataset": "mnist",
+  "mode": "FULL",
+  "timestamp": "20251231_231122",
+  "epochs": 20,
+  "batch_size": 2048,
+  "results": [
+    {
+      "name": "0.Original",
+      "baseline": 0.9799,
+      "pfn": 0.9828,
+      "improvement": 0.0029000000000000137
+    },
+    {
+      "name": "1.Bottleneck",
+      "baseline": 0.9714,
+      "pfn": 0.9805,
+      "improvement": 0.009099999999999997
+    },
+    {
+      "name": "2.Deep",
+      "baseline": 0.9506,
+      "pfn": 0.9481,
+      "improvement": -0.0024999999999999467
+    },
+    {
+      "name": "3.Noisy",
+      "baseline": 0.8692,
+      "pfn": 0.8708,
+      "improvement": 0.0016000000000000458
+    }
+  ],
+  "avg_improvement": 0.0027750000000000274,
+  "wins": 3
+}

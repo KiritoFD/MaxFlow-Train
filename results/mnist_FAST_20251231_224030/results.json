@@ -1,0 +1,35 @@
+{
+  "dataset": "mnist",
+  "mode": "FAST",
+  "results": [
+    {
+      "baseline": 0.9742,
+      "pfn": 0.9741,
+      "improvement": -9.999999999998899e-05,
+      "name": "0.Baseline",
+      "desc": "\u539f\u59cb\u6570\u636e\u96c6\uff0c\u6807\u51c6MLP"
+    },
+    {
+      "baseline": 0.957,
+      "pfn": 0.9733,
+      "improvement": 0.016300000000000092,
+      "name": "1.Bottleneck",
+      "desc": ""
+    },
+    {
+      "baseline": 0.9225,
+      "pfn": 0.9487,
+      "improvement": 0.0262,
+      "name": "2.Deep",
+      "desc": ""
+    },
+    {
+      "baseline": 0.8639,
+      "pfn": 0.8735,
+      "improvement": 0.009600000000000053,
+      "name": "3.Noisy",
+      "desc": ""
+    }
+  ],
+  "avg_improvement": 0.01300000000000004
+}
