@@ -14,8 +14,8 @@ from pfn import PFNGraphBuilder, IncrementalPushRelabel, BottleneckOptimizer
 # ==================== CONFIG ====================
 CONFIG = {
     'mnist': {
-        'fast': {'epochs': 10, 'batch': 128},
-        'full': {'epochs': 20, 'batch': 64},
+        'epochs_list': [30],
+        'batches_list': [32],
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
             {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 4},
@@ -24,8 +24,8 @@ CONFIG = {
         ]
     },
     'cifar10': {
-        'fast': {'epochs': 10, 'batch': 64},
-        'full': {'epochs': 30, 'batch': 128},
+        'epochs_list': [50],
+        'batches_list': [64,128,256,512],
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
             {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},
@@ -34,8 +34,8 @@ CONFIG = {
         ]
     },
     'cifar100': {
-        'fast': {'epochs': 15, 'batch': 128},
-        'full': {'epochs': 50, 'batch': 128},
+        'epochs_list': [100],
+        'batches_list': [128,256,512],
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
             {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},
@@ -316,19 +316,20 @@ def run_scenario(dataset, cfg, epochs, batch, device, results_dir):
     return {'name': name, 'baseline': base_acc, 'pfn': pfn_acc, 'improvement': pfn_acc - base_acc}
 
 
-def run_experiment(dataset='mnist', force_cpu=False, fast=False, scenarios=None):
+def run_experiment(dataset='mnist', force_cpu=False, scenarios=None,
+                   epochs_override=None, batch_override=None):
     device = get_device(force_cpu)
-    mode = 'FAST' if fast else 'FULL'
     cfg = CONFIG[dataset]
-    settings = cfg['fast' if fast else 'full']
-    epochs, batch = settings['epochs'], settings['batch']
+    # Determine effective epochs/batch for this single run (fallback to first elements)
+    epochs = epochs_override if epochs_override is not None else cfg['epochs_list'][0]
+    batch = batch_override if batch_override is not None else cfg['batches_list'][0]
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    results_dir = f'./results_{timestamp}/{dataset}'
+    results_dir = f'./results_{timestamp}/{dataset}_e{epochs}_b{batch}'
     os.makedirs(results_dir, exist_ok=True)
     
     print("=" * 60)
-    print(f"  PFN EXPERIMENT - {dataset.upper()} - {mode}")
+    print(f"  PFN EXPERIMENT - {dataset.upper()}")
     print(f"  Device: {device} | Epochs: {epochs} | Batch: {batch}")
     print("=" * 60)
     
@@ -361,16 +362,24 @@ def run_experiment(dataset='mnist', force_cpu=False, fast=False, scenarios=None)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PFN Experiment Runner')
-    parser.add_argument('--dataset', default='mnist', choices=['mnist', 'cifar10', 'cifar100'],
-                        help='Dataset to use (default: mnist)')
+    parser.add_argument('--dataset', default=None, choices=['mnist', 'cifar10', 'cifar100'],
+                        help='Dataset to use (default: all datasets if omitted)')
+    parser.add_argument('--datasets', nargs='+', default=None,
+                        help='Run multiple datasets, e.g., --datasets mnist cifar10 (overrides --dataset)')
     parser.add_argument('--cpu', action='store_true',
                         help='Force CPU usage')
-    parser.add_argument('--fast', action='store_true',
-                        help='Use fast (fewer epochs) mode')
     parser.add_argument('--scenarios', nargs='+', default=None,
                         help='Specific scenarios to run (e.g., --scenarios 0 1 or --scenarios original bottleneck)')
     parser.add_argument('--no-cache', action='store_true',
                         help='Ignore cached baseline results')
+    parser.add_argument('--epochs', type=int, default=None,
+                        help='Override epochs (single value for all runs in this invocation)')
+    parser.add_argument('--batch', type=int, default=None,
+                        help='Override batch size (single value for all runs in this invocation)')
+    parser.add_argument('--epochs-list', nargs='+', type=int, default=None,
+                        help='List of epochs to run all combinations, e.g., --epochs-list 10 20')
+    parser.add_argument('--batches-list', nargs='+', type=int, default=None,
+                        help='List of batch sizes to run all combinations, e.g., --batches-list 64 128')
     
     args = parser.parse_args()
     
@@ -379,4 +388,25 @@ if __name__ == '__main__':
         baseline_cache.cache_dir = './results-baseline-nocache'
         os.makedirs(baseline_cache.cache_dir, exist_ok=True)
     
-    run_experiment(args.dataset, args.cpu, args.fast, args.scenarios)
+    # 确定目标数据集：优先 --datasets, 否则 --dataset，若都没给则默认全部数据集
+    if args.datasets:
+        targets = args.datasets
+    elif args.dataset:
+        targets = [args.dataset]
+    else:
+        targets = list(CONFIG.keys())
+    
+    # 对每个数据集，生成 epochs_list 与 batches_list（优先使用用户提供列表/单值，否则使用该数据集的配置）
+    for ds in targets:
+        cfg = CONFIG[ds]
+        default_epochs = cfg['epochs_list']
+        default_batches = cfg['batches_list']
+        
+        epochs_list = args.epochs_list if args.epochs_list is not None else ([args.epochs] if args.epochs is not None else default_epochs)
+        batches_list = args.batches_list if args.batches_list is not None else ([args.batch] if args.batch is not None else default_batches)
+        
+        # 运行所有组合
+        for ep in epochs_list:
+            for bs in batches_list:
+                print(f"\n>> Running dataset={ds} epochs={ep} batch={bs}")
+                run_experiment(ds, args.cpu, args.scenarios, epochs_override=ep, batch_override=bs)

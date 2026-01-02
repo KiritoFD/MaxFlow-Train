@@ -1,0 +1,30 @@
+{
+  "results": [
+    {
+      "name": "0.Original",
+      "baseline": 0.5486,
+      "pfn": 0.645,
+      "improvement": 0.09640000000000004
+    },
+    {
+      "name": "1.Bottleneck",
+      "baseline": 0.4978,
+      "pfn": 0.5061,
+      "improvement": 0.008299999999999974
+    },
+    {
+      "name": "2.Deep",
+      "baseline": 0.7859,
+      "pfn": 0.8469,
+      "improvement": 0.06099999999999994
+    },
+    {
+      "name": "3.Noisy",
+      "baseline": 0.5486,
+      "pfn": 0.3208,
+      "improvement": -0.2278
+    }
+  ],
+  "avg": -0.015525000000000011,
+  "wins": 3
+}
