@@ -253,6 +253,48 @@ def plot_baseline_vs_pfn_by_condition(dataset: str, data: dict):
     print(f"Saved: {output_file}")
     plt.close()
 
+def plot_individual_conditions(dataset: str, data: dict):
+    """Plot each condition separately as individual PNG files."""
+    by_condition = defaultdict(list)
+    for key, values in data.items():
+        cond_code = int(values["condition_code"])
+        by_condition[cond_code].append((key, values))
+    
+    for cond_code in sorted(by_condition.keys()):
+        items = by_condition[cond_code]
+        cond_name = items[0][1]["condition_name"] if items else "Unknown"
+        
+        fig, ax = plt.subplots(figsize=(12, 8))
+        fig.suptitle(f"{dataset.upper()} - {cond_name}", fontsize=16, fontweight='bold')
+        
+        # Sort items by batch_size for consistent color assignment
+        sorted_items = sorted(items, key=lambda x: int(x[1]["batch_size"]) if x[1]["batch_size"] else 0)
+        
+        for color_idx, (key, values) in enumerate(sorted_items):
+            baseline = values["baseline"]
+            pfn = values["pfn"]
+            batch_size = values["batch_size"]
+            x = list(range(len(baseline)))
+            
+            baseline_color = BASELINE_COLORS[min(color_idx, len(BASELINE_COLORS)-1)]
+            pfn_color = PFN_COLORS[min(color_idx, len(PFN_COLORS)-1)]
+            
+            if baseline:
+                ax.plot(x, baseline, marker='o', linewidth=2.5, markersize=5, color=baseline_color, alpha=0.8, label=f"Baseline (b={batch_size})")
+            if pfn:
+                ax.plot(x, pfn, marker='s', linewidth=2.5, markersize=5, color=pfn_color, alpha=0.8, linestyle='--', label=f"PFN (b={batch_size})")
+        
+        ax.set_xlabel("Epoch Sample (10-point sampling)", fontsize=12)
+        ax.set_ylabel("Accuracy", fontsize=12)
+        ax.grid(True, alpha=0.3)
+        ax.legend(fontsize=10, loc='best')
+        
+        plt.tight_layout()
+        output_file = OUTPUT_DIR / f"{dataset}_{cond_code}_{cond_name}.png"
+        plt.savefig(output_file, dpi=150, bbox_inches='tight')
+        print(f"Saved: {output_file}")
+        plt.close()
+
 def main():
     data_by_dataset = read_csv_data()
     
@@ -264,6 +306,7 @@ def main():
         plot_comparison_by_condition(dataset, data_by_dataset[dataset])
         plot_batch_size_comparison(dataset, data_by_dataset[dataset])
         plot_baseline_vs_pfn_by_condition(dataset, data_by_dataset[dataset])
+        plot_individual_conditions(dataset, data_by_dataset[dataset])
     
     print(f"\nAll visualizations saved to: {OUTPUT_DIR}")
 
