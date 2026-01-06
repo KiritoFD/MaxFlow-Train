@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>PFN Data Plotter</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JSZip and FileSaver for packaging and saving zip client-side -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        textarea { width: 100%; height: 150px; font-family: monospace; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+        .btn { background: #1a73e8; color: white; border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; margin: 15px 0; font-weight: bold; }
+        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .card-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        /* 固定canvas大小，防止因数据点过多变形 */
+        .chart-grid canvas { width: 100% !important; height: 350px !important; max-width: 650px; max-height: 350px; min-width: 350px; min-height: 350px; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <textarea id="logInput" placeholder="在此粘贴完整日志..."></textarea>
+    <div style="display:flex; gap:10px; align-items:center;">
+        <button id="genBtn" class="btn" onclick="run()">生成所有实验组合图表</button>
+        <button id="dlBtn" class="btn" onclick="downloadAllCharts()" disabled>下载所有图表 (.zip)</button>
+    </div>
+
+    <!-- 新增：解析统计摘要 -->
+    <div id="summary" class="card" style="display:none; margin-top:10px;">
+        <div class="card-title">解析统计</div>
+        <div id="summaryText">共解析到 <strong id="totalCount">0</strong> 个数据点</div>
+    </div>
+
+    <div id="displayArea"></div>
+</div>
+
+<script>
+    // 全局：所有数据扫描得到的 Y 轴范围（供后续所有图复用）
+    let globalLossRange = null;
+    let globalAccRange = null;
+    // 全局保存当前生成的 chart 实例（用于导出和销毁）
+    const chartsRegistry = [];
+
+    function clearPreviousCharts() {
+        // 销毁已有 Chart 实例并清空 registry
+        while (chartsRegistry.length) {
+            const it = chartsRegistry.pop();
+            try { it.lossChart && it.lossChart.destroy(); } catch (e) {}
+            try { it.accChart && it.accChart.destroy(); } catch (e) {}
+        }
+        updateDownloadButtonState();
+    }
+
+    function updateDownloadButtonState() {
+        document.getElementById('dlBtn').disabled = chartsRegistry.length === 0;
+    }
+
+    function run() {
+        // 每次生成前清理上次的图表实例
+        clearPreviousCharts();
+        const text = document.getElementById('logInput').value;
+        const display = document.getElementById('displayArea');
+        const summary = document.getElementById('summary');
+        const totalCountEl = document.getElementById('totalCount');
+        display.innerHTML = '';
+        summary.style.display = 'none';
+        totalCountEl.textContent = '0';
+
+        let totalCount = 0; // 统计所有解析到的数据点
+
+        // 逐行解析整个文本，按场景和类型（Baseline/PFN）聚合数据
+        const scenarios = parseAll(text);
+        // 1) 扫描所有数据，计算全局 loss/acc 范围
+        let gLossMin = Infinity, gLossMax = -Infinity;
+        let gAccMin = Infinity, gAccMax = -Infinity;
+        scenarios.forEach(({ types }) => {
+            ['Baseline', 'PFN'].forEach(t => {
+                const d = types[t];
+                if (d && d.loss.length > 0) {
+                    gLossMin = Math.min(gLossMin, ...d.loss);
+                    gLossMax = Math.max(gLossMax, ...d.loss);
+                    gAccMin = Math.min(gAccMin, ...d.acc);
+                    gAccMax = Math.max(gAccMax, ...d.acc);
+                }
+            });
+        });
+        if (gLossMin !== Infinity) {
+            const lpad = (gLossMax - gLossMin) * 0.02 || gLossMax * 0.02;
+            globalLossRange = { min: gLossMin - lpad, max: gLossMax + lpad };
+        }
+        if (gAccMin !== Infinity) {
+            const apad = (gAccMax - gAccMin) * 0.02 || 0.01;
+            let aMin = Math.max(0, gAccMin - apad);
+            let aMax = Math.min(1, (gAccMax + apad) || 1);
+            globalAccRange = { min: aMin, max: aMax };
+        }
+
+        // 2) 使用全局范围绘图
+        scenarios.forEach(({ name: sName, types }) => {
+            const baselineData = types['Baseline'];
+            const pfnData = types['PFN'];
+
+            ['Baseline', 'PFN'].forEach(type => {
+                const data = types[type];
+                if (data && data.loss.length > 0) {
+                    createChartCard(sName, type, data, display);
+                    totalCount += data.epochs.length;
+                }
+            });
+
+            // 如果同一场景下同时存在 Baseline 与 PFN，则生成叠加对比图
+            if (baselineData && baselineData.loss.length > 0 && pfnData && pfnData.loss.length > 0) {
+                createCombinedCard(sName, baselineData, pfnData, display);
+            }
+        });
+ 
+         // 显示统计结果
+         totalCountEl.textContent = String(totalCount);
+         summary.style.display = 'block';
+     }
+ 
+    // 下载所有图表为 zip
+    async function downloadAllCharts() {
+        if (chartsRegistry.length === 0) return;
+        const zip = new JSZip();
+        for (const it of chartsRegistry) {
+            // sanitize filename
+            const base = `${it.name.replace(/[^\w\-]/g, '_')}_${it.type}`;
+            try {
+                const lossDataUrl = it.lossChart.toBase64Image(); // data:image/png;base64,...
+                const lossBase64 = lossDataUrl.split(',')[1];
+                zip.file(`${base}_loss.png`, lossBase64, { base64: true });
+            } catch (e) { console.warn('loss image failed for', it, e); }
+            try {
+                const accDataUrl = it.accChart.toBase64Image();
+                const accBase64 = accDataUrl.split(',')[1];
+                zip.file(`${base}_acc.png`, accBase64, { base64: true });
+            } catch (e) { console.warn('acc image failed for', it, e); }
+        }
+        const blob = await zip.generateAsync({ type: 'blob' });
+        saveAs(blob, 'charts.zip');
+    }
+ 
+    // 逐行解析文本，按场景->类型聚合 epoch/loss/acc
+    function parseAll(text) {
+        const lines = text.split(/\r?\n/);
+        const scenarios = [];
+        let currentScenario = null;
+        let currentType = null;
+
+        const scenarioHeaderRe = /^\s*\[\s*\d+\s*\/\s*\d+\]\s+([^\n].*?)$/;
+        const typeHeaderRe = /^\s*\[(Baseline|PFN)\]/i;
+        const dataLineRe = /\[\s*(\d+)\s*\/\s*\d+\]\s+.*?loss\s*=\s*([0-9]*\.?[0-9]+).*?acc\s*=\s*([0-9]*\.?[0-9]+)/i;
+
+        for (const rawLine of lines) {
+            const line = rawLine.trim();
+            if (!line) continue;
+
+            const sh = scenarioHeaderRe.exec(line);
+            // 要保证不是 epoch 行（epoch 行一般包含 loss=），因此额外检查
+            if (sh && !/loss\s*=/.test(line.toLowerCase())) {
+                currentScenario = { name: sh[0].trim(), types: { Baseline: { epochs: [], loss: [], acc: [] }, PFN: { epochs: [], loss: [], acc: [] } } };
+                scenarios.push(currentScenario);
+                currentType = null;
+                continue;
+            }
+
+            const th = typeHeaderRe.exec(line);
+            if (th && currentScenario) {
+                currentType = th[1];
+                continue;
+            }
+
+            const dl = dataLineRe.exec(line);
+            if (dl && currentScenario && currentType) {
+                currentScenario.types[currentType].epochs.push(parseInt(dl[1], 10));
+                currentScenario.types[currentType].loss.push(parseFloat(dl[2]));
+                currentScenario.types[currentType].acc.push(parseFloat(dl[3]));
+            }
+        }
+
+        return scenarios;
+    }
+
+    function parseData(content) {
+        const loss = [], acc = [], epochs = [];
+        // 支持各种空格、大小写、以及行内其他文本，尽量稳健地捕获 epoch, loss, acc
+        const lineRegex = /(?:\[\s*(\d+)\s*\/\s*\d+\])?.*?loss\s*=\s*([0-9]*\.?[0-9]+).*?acc\s*=\s*([0-9]*\.?[0-9]+)/i;
+        const lines = content.split(/\r?\n/);
+        for (const line of lines) {
+            const m = lineRegex.exec(line);
+            if (m) {
+                // 如果行里有 epoch，就用它；否则以序号推断（上一 epoch +1 或 1 开始）
+                const epoch = m[1] ? parseInt(m[1], 10) : (epochs.length > 0 ? epochs[epochs.length - 1] + 1 : 1);
+                epochs.push(epoch);
+                loss.push(parseFloat(m[2]));
+                acc.push(parseFloat(m[3]));
+            }
+        }
+        return { epochs, loss, acc };
+    }
+
+    function createChartCard(sName, type, data, container) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        const cardId = `chart-${sName}-${type}`.replace(/\s+/g, '-');
+        
+        card.innerHTML = `
+            <div class="card-title">${sName} - <span style="color:${type==='PFN'?'#d93025':'#1a73e8'}">${type}</span></div>
+            <div class="chart-grid">
+                <canvas id="loss-${cardId}" width="650" height="350"></canvas>
+                <canvas id="acc-${cardId}" width="650" height="350"></canvas>
+            </div>
+        `;
+        container.appendChild(card);
+
+        // 构造均匀分布的点：用 index 作为 x，保留原始 epoch 供 tooltip 使用
+        const n = data.epochs.length;
+        const lossPoints = data.epochs.map((e, i) => ({ x: i, y: data.loss[i], epoch: e }));
+        const accPoints = data.epochs.map((e, i) => ({ x: i, y: data.acc[i], epoch: e }));
+
+        // 保持画布总宽度固定，避免末尾点被裁剪；起点从 0 开始
+        const xMin = 0;
+        const xMax = n - 1 + 0.5;
+
+        // 根据数据最大最小值缩放 Y 轴，去掉点标记并使用平滑粗线（论文风）
+        const commonOptionsBase = {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'linear',
+                    display: true, // 显示横轴刻度
+                    min: xMin,
+                    max: xMax,
+                    title: { display: true, text: 'Epoch' },
+                    ticks: {
+                        // 显示为实际 epoch（用索引映射到 data.epochs），仅在整数刻度处显示
+                        callback: function(value) {
+                            const idx = Math.round(value);
+                            // 只在接近整数的位置显示（容差 1e-6）
+                            if (Math.abs(value - idx) > 1e-6) return '';
+                            if (idx >= 0 && idx < n) return data.epochs[idx];
+                            return '';
+                        },
+                        // 固定步长：每隔 30 个 epoch 显示一个刻度
+                        stepSize: 30,
+                        // 强制按步长显示（如果需要可改回 autoSkip: true）
+                        autoSkip: false,
+                        precision: 0,
+                         maxRotation: 45,
+                         align: 'center'
+                    },
+                    grid: { display: true }
+                }
+            },
+             plugins: {
+                 legend: { display: true },
+                 tooltip: {
+                     enabled: true,
+                     callbacks: {
+                         // 在 tooltip 中显示原始 epoch 并格式化数值
+                         label: function(context) {
+                             const d = context.raw;
+                             const val = (d && d.y !== undefined) ? d.y : context.parsed.y;
+                             const fixed = (context.dataset.label && /loss/i.test(context.dataset.label)) ? val.toFixed(4) : val.toFixed(4);
+                             if (d && d.epoch !== undefined) return `${context.dataset.label}: ${fixed} (epoch ${d.epoch})`;
+                             return `${context.dataset.label}: ${fixed}`;
+                         }
+                     }
+                 }
+             },
+            elements: {
+                point: { radius: 0 }, // 不显示点圈
+                line: { tension: 0, borderCapStyle: 'butt', borderJoinStyle: 'miter' } // 折线（不平滑）
+            }
+        };
+
+        // Loss: 根据 loss 数据上下限缩放 Y 轴，去点、平滑、增粗线条
+        const lossMin = Math.min(...data.loss);
+        const lossMax = Math.max(...data.loss);
+        const lossPadding = (lossMax - lossMin) * 0.02 || lossMax * 0.02;
+        const lossOptions = JSON.parse(JSON.stringify(commonOptionsBase));
+        // 优先使用全局扫描得到的范围（若存在）
+        if (globalLossRange) {
+            lossOptions.scales.y = { min: globalLossRange.min, max: globalLossRange.max, ticks: { precision: 4 } };
+        } else {
+            lossOptions.scales.y = { min: lossMin - lossPadding, max: lossMax + lossPadding, ticks: { precision: 4 } };
+        }
+
+        const lossChart = new Chart(document.getElementById(`loss-${cardId}`), {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: 'Loss',
+                        data: lossPoints,
+                        borderColor: '#d93025',
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0 // 折线波动
+                    }
+                ]
+            },
+            options: lossOptions
+        });
+
+        // Acc: 根据 acc 数据缩放 Y 轴（并 clamp 到 [0,1]），去点、平滑、增粗线条
+        const accMin = Math.min(...data.acc);
+        const accMax = Math.max(...data.acc);
+        const accPadding = (accMax - accMin) * 0.02 || 0.01;
+        let accYMin = accMin - accPadding;
+        let accYMax = accMax + accPadding;
+        accYMin = Math.max(0, accYMin);
+        accYMax = Math.min(1, accYMax || 1);
+
+        const accOptions = JSON.parse(JSON.stringify(commonOptionsBase));
+        // 优先使用全局扫描得到的 acc 范围（若存在）
+        if (globalAccRange) {
+            accOptions.scales.y = { min: globalAccRange.min, max: globalAccRange.max, ticks: { precision: 4 } };
+        } else {
+            accOptions.scales.y = { min: accYMin, max: accYMax, ticks: { precision: 4 } };
+        }
+
+        const accChart = new Chart(document.getElementById(`acc-${cardId}`), {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: 'Accuracy',
+                        data: accPoints,
+                        borderColor: '#1e8e3e',
+                        borderWidth: 2.0,
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0 // 折线波动
+                    }
+                ]
+            },
+            options: accOptions
+        });
+
+        // 保存到 registry 以便下载与销毁
+        chartsRegistry.push({ name: sName, type, lossChart, accChart });
+        updateDownloadButtonState();
+    }
+
+    // 新增：为同一场景绘制 Baseline vs PFN 的叠加 Loss / Acc 图
+    function createCombinedCard(sName, baseline, pfn, container) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        const cardId = `combined-${sName}`.replace(/\s+/g, '-');
+
+        card.innerHTML = `
+            <div class="card-title">${sName} - <span style="color:#6a1b9a">Combined (Baseline vs PFN)</span></div>
+            <div class="chart-grid">
+                <canvas id="combined-loss-${cardId}" width="650" height="350"></canvas>
+                <canvas id="combined-acc-${cardId}" width="650" height="350"></canvas>
+            </div>
+        `;
+        container.appendChild(card);
+
+        // 以实际 epoch 为 x，便于对齐比较
+        const baseLossPts = baseline.epochs.map((e, i) => ({ x: e, y: baseline.loss[i], epoch: e }));
+        const pfnLossPts = pfn.epochs.map((e, i) => ({ x: e, y: pfn.loss[i], epoch: e }));
+        const baseAccPts = baseline.epochs.map((e, i) => ({ x: e, y: baseline.acc[i], epoch: e }));
+        const pfnAccPts = pfn.epochs.map((e, i) => ({ x: e, y: pfn.acc[i], epoch: e }));
+
+        const allEpochs = baseline.epochs.concat(pfn.epochs);
+        const xMin = Math.min(...allEpochs);
+        const xMax = Math.max(...allEpochs);
+
+        // 通用 x 配置（显示实际 epoch，步长 30）
+        const xScale = {
+            type: 'linear',
+            display: true,
+            min: xMin,
+            max: xMax,
+            title: { display: true, text: 'Epoch' },
+            ticks: {
+                callback: function(value) {
+                    const v = Math.round(value);
+                    if (Math.abs(value - v) > 1e-6) return '';
+                    return v;
+                },
+                stepSize: 30,
+                autoSkip: false,
+                precision: 0
+            },
+            grid: { display: true }
+        };
+
+        // Loss 图
+        const lossOptions = {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+                x: xScale,
+                y: globalLossRange ? { min: globalLossRange.min, max: globalLossRange.max, ticks: { precision: 4 } } : {}
+            },
+            plugins: {
+                legend: { display: true },
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(context) {
+                            const d = context.raw;
+                            const val = (d && d.y !== undefined) ? d.y : context.parsed.y;
+                            const fixed = val.toFixed(4);
+                            if (d && d.epoch !== undefined) return `${context.dataset.label}: ${fixed} (epoch ${d.epoch})`;
+                            return `${context.dataset.label}: ${fixed}`;
+                        }
+                    }
+                }
+            },
+            elements: { point: { radius: 0 }, line: { tension: 0 } }
+        };
+
+        const lossChart = new Chart(document.getElementById(`combined-loss-${cardId}`), {
+            type: 'line',
+            data: {
+                datasets: [
+                    { label: 'Baseline Loss', data: baseLossPts, borderColor: '#1a73e8', borderWidth: 2, pointRadius: 0, fill: false, tension: 0 },
+                    { label: 'PFN Loss', data: pfnLossPts, borderColor: '#d93025', borderWidth: 2, pointRadius: 0, fill: false, tension: 0 }
+                ]
+            },
+            options: lossOptions
+        });
+ 
+        // Acc 图：补上 accOptions（使用 globalAccRange，如果存在）
+        const accOptions = {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+                x: xScale,
+                y: globalAccRange ? { min: globalAccRange.min, max: globalAccRange.max, ticks: { precision: 4 } } : { min: 0, max: 1 }
+            },
+            plugins: lossOptions.plugins,
+            elements: { point: { radius: 0 }, line: { tension: 0 } }
+        };
+
+        const accChart = new Chart(document.getElementById(`combined-acc-${cardId}`), {
+            type: 'line',
+            data: {
+                datasets: [
+                    { label: 'Baseline Acc', data: baseAccPts, borderColor: '#1a73e8', borderWidth: 2, pointRadius: 0, fill: false, tension: 0 },
+                    { label: 'PFN Acc', data: pfnAccPts, borderColor: '#1e8e3e', borderWidth: 2, pointRadius: 0, fill: false, tension: 0 }
+                ]
+            },
+            options: accOptions
+        });
+
+        // 保存到 registry 以便下载与销毁
+        chartsRegistry.push({ name: sName, type: 'combined', lossChart, accChart });
+        updateDownloadButtonState();
+    }
+ </script>
+
+</body>
+</html>

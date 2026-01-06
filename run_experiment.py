@@ -35,7 +35,7 @@ CONFIG = {
     },
     'cifar100': {
         'epochs_list': [100],
-        'batches_list': [128,256,512],
+        'batches_list': [512],
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
             {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},

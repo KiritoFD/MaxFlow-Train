@@ -1,23 +1,21 @@
 from .models import (
-    PartitionedLinear,
+    get_model,
     PartitionedMLP,
     BottleneckMLP,
     DeepMLP,
-    ChannelPartitionedConv2d,
     PartitionedCNN,
     DeepPartitionedCNN,
     BottleneckCNN,
-    get_model
+    VGG11NoBN,
 )
 
 __all__ = [
-    'PartitionedLinear',
-    'PartitionedMLP', 
-    'BottleneckMLP',
-    'DeepMLP',
-    'ChannelPartitionedConv2d',
-    'PartitionedCNN',
-    'DeepPartitionedCNN',
-    'BottleneckCNN',
-    'get_model'
+    "get_model",
+    "PartitionedMLP",
+    "BottleneckMLP",
+    "DeepMLP",
+    "PartitionedCNN",
+    "DeepPartitionedCNN",
+    "BottleneckCNN",
+    "VGG11NoBN",
 ]
