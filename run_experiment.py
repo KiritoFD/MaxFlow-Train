@@ -1,3 +1,4 @@
+#%%writefile run_experiment.py
 """PFN Experiment - Parameter Flow Network for Neural Network Optimization."""
 
 import os, json, argparse, torch, numpy as np
@@ -8,14 +9,14 @@ from tqdm import tqdm
 from datetime import datetime
 from typing import Dict, List, Optional
 from models import get_model
-from pfn import PFNGraphBuilder, IncrementalPushRelabel, BottleneckOptimizer
+from pfn import PFNGraphBuilder, IncrementalPushRelabel, BottleneckOptimizer, reset_pfn_logger, get_pfn_logger
 
 
 # ==================== CONFIG ====================
 CONFIG = {
     'mnist': {
         'epochs_list': [30],
-        'batches_list': [32],
+        'batches_list': [64],
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
             {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 4},
@@ -25,73 +26,30 @@ CONFIG = {
     },
     'cifar10': {
         'epochs_list': [50],
-        'batches_list': [64,128,256,512],
+        'batches_list': [256],
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
-            {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},
-            {'name': '2.Deep', 'scenario': 'deep', 'num_layers': 15, 'lr': 0.0005},
-            {'name': '3.Noisy', 'scenario': 'standard', 'pixel_noise': 0.2, 'label_noise': 0.1, 'samples': 200},
+            {'name': '1.NoBN', 'scenario': 'standard_no_bn'},
+            {'name': '2.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},
+            {'name': '3.Deep', 'scenario': 'deep', 'num_layers': 12, 'lr': 0.0003},
+            {'name': '4.Noisy', 'scenario': 'standard', 'pixel_noise': 0.2, 'label_noise': 0.1, 'samples': 200},
         ]
     },
     'cifar100': {
-        'epochs_list': [100],
-        'batches_list': [512],
+        'epochs_list': [200],
+        'batches_list': [128, 256, 512],
         'scenarios': [
             {'name': '0.Original', 'scenario': 'standard'},
-            {'name': '1.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},
-            {'name': '2.Deep', 'scenario': 'deep', 'num_layers': 15, 'lr': 0.0005},
-            {'name': '3.Noisy', 'scenario': 'standard', 'pixel_noise': 0.15, 'label_noise': 0.1, 'samples': 300},
+            {'name': '1.NoBN', 'scenario': 'standard_no_bn'},
+            {'name': '2.Bottleneck', 'scenario': 'bottleneck', 'bottleneck_width': 2},
+            {'name': '3.Deep', 'scenario': 'deep', 'num_layers': 12, 'lr': 0.0003},
+            {'name': '4.Noisy', 'scenario': 'standard', 'pixel_noise': 0.15, 'label_noise': 0.1, 'samples': 300},
         ]
     },
 }
-PFN_INTERVAL = 100  # 增加间隔，减少干扰Adam
-PFN_WARMUP_STEPS = 200  # 前200步不介入，让Adam稳定
+PFN_INTERVAL = 50
+PFN_WARMUP_STEPS = 100
 BASE_LR = 0.0001
-
-
-# ==================== BASELINE CACHE ====================
-class BaselineCache:
-    """Baseline结果缓存系统"""
-    
-    def __init__(self, cache_dir: str = './results-baseline'):
-        self.cache_dir = cache_dir
-        os.makedirs(cache_dir, exist_ok=True)
-    
-    def _get_cache_key(self, dataset: str, scenario: str, batch_size: int, epochs: int) -> str:
-        """生成缓存键"""
-        return f"{dataset}_{scenario}_b{batch_size}_e{epochs}"
-    
-    def get(self, dataset: str, scenario: str, batch_size: int, epochs: int) -> Optional[Dict]:
-        """获取缓存的baseline结果"""
-        key = self._get_cache_key(dataset, scenario, batch_size, epochs)
-        cache_file = os.path.join(self.cache_dir, f"{key}.json")
-        
-        if os.path.exists(cache_file):
-            try:
-                with open(cache_file, 'r') as f:
-                    return json.load(f)
-            except:
-                return None
-        return None
-    
-    def save(self, dataset: str, scenario: str, batch_size: int, epochs: int, 
-             acc: float, loss_hist: List[float], acc_hist: List[float]):
-        """保存baseline结果"""
-        key = self._get_cache_key(dataset, scenario, batch_size, epochs)
-        cache_file = os.path.join(self.cache_dir, f"{key}.json")
-        
-        data = {
-            'acc': float(acc),
-            'loss': loss_hist,
-            'acc_hist': acc_hist,
-            'timestamp': datetime.now().isoformat()
-        }
-        
-        with open(cache_file, 'w') as f:
-            json.dump(data, f)
-
-
-baseline_cache = BaselineCache()
 
 
 # ==================== DATA ====================
@@ -139,12 +97,42 @@ class SmallDataset(Dataset):
 
 
 def get_loaders(dataset_name, batch_size, pixel_noise=0, label_noise=0, samples_per_class=None):
+    """适配多环境的数据加载器，支持 Kaggle/本地/下载回退"""
     num_classes = 100 if dataset_name == 'cifar100' else 10
+    
+    writable_root = '/kaggle/working/data'
+    try:
+        os.makedirs(writable_root, exist_ok=True)
+        print(f"Using writable root: {writable_root}")
+    except Exception as e:
+        fallback_writable = os.path.join(os.getcwd(), 'data_writable')
+        os.makedirs(fallback_writable, exist_ok=True)
+        print(f"Warning: cannot create {writable_root} ({e}); falling back to {fallback_writable}")
+        writable_root = fallback_writable
+    
+    local_root = os.path.join(os.getcwd(), 'data')
+    input_root = f'/kaggle/input/{dataset_name}'
+    candidates = [input_root, local_root, writable_root]
     
     if dataset_name == 'mnist':
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
-        train_ds = datasets.MNIST('./data', train=True, download=True, transform=transform)
-        test_ds = datasets.MNIST('./data', train=False, transform=transform)
+        
+        def try_load_mnist(train):
+            for root in candidates:
+                if not os.path.exists(root): continue
+                try:
+                    ds = datasets.MNIST(root, train=train, download=False, transform=transform)
+                    print(f"    Loaded MNIST (train={train}) from {root}")
+                    return ds
+                except Exception as e:
+                    print(f"    MNIST load failed at {root}: {e}")
+            ds = datasets.MNIST(writable_root, train=train, download=True, transform=transform)
+            print(f"    Downloaded MNIST to {writable_root}")
+            return ds
+        
+        train_ds = try_load_mnist(True)
+        test_ds = try_load_mnist(False)
+        
     else:
         train_transform = transforms.Compose([
             transforms.RandomCrop(32, padding=4), transforms.RandomHorizontalFlip(),
@@ -153,11 +141,27 @@ def get_loaders(dataset_name, batch_size, pixel_noise=0, label_noise=0, samples_
         test_transform = transforms.Compose([
             transforms.ToTensor(), transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
         ])
+        
         DS = datasets.CIFAR100 if dataset_name == 'cifar100' else datasets.CIFAR10
-        train_ds = DS('./data', train=True, download=True, transform=train_transform)
-        test_ds = DS('./data', train=False, transform=test_transform)
+        
+        def try_load_cifar(train):
+            for root in candidates:
+                if not os.path.exists(root): continue
+                try:
+                    ds = DS(root=root, train=train, download=True, 
+                           transform=(train_transform if train else test_transform))
+                    print(f"    Loaded {dataset_name.upper()} (train={train}) from {root}")
+                    return ds
+                except Exception as e:
+                    print(f"    {dataset_name.upper()} load failed at {root}: {e}")
+            ds = DS(root=writable_root, train=train, download=True,
+                   transform=(train_transform if train else test_transform))
+            print(f"    Downloaded {dataset_name.upper()} to {writable_root}")
+            return ds
+        
+        train_ds = try_load_cifar(True)
+        test_ds = try_load_cifar(False)
     
-    # Apply modifications in order: small sample first, then noise
     if samples_per_class:
         train_ds = SmallDataset(train_ds, samples_per_class, num_classes)
     if pixel_noise > 0 or label_noise > 0:
@@ -188,7 +192,6 @@ def train_epoch(model, loader, opt, criterion, device, pfn=None, step=0, epoch=0
         loss = criterion(model(x), y)
         loss.backward()
         
-        # PFN分析（warmup后才介入，降低频率）
         if pfn and step > PFN_WARMUP_STEPS and step % PFN_INTERVAL == 0:
             grads = {k: [t.detach().cpu() for t in v] for k, v in model.get_all_block_gradients().items()}
             
@@ -198,7 +201,6 @@ def train_epoch(model, loader, opt, criterion, device, pfn=None, step=0, epoch=0
             cap, meta = pfn['gb'].build_graph(grads)
             max_flow, cuts, S, T = pfn['solver'].find_min_cut(cap, pfn['gb'].source, pfn['gb'].sink)
             
-            # 计算flow deficit
             total_cap = sum(cap[u][v] for u, v in cuts) if cuts else 1.0
             flow_deficit = (total_cap - max_flow) / (total_cap + 1e-9)
             
@@ -222,7 +224,7 @@ def evaluate(model, loader, device):
     return correct / total
 
 
-def train_model(config: dict, device, use_pfn=False):
+def train_model(config: dict, device, use_pfn=False, results_dir: str = './results'):
     lr = config.get('lr', BASE_LR)
     
     train_loader, test_loader = get_loaders(
@@ -233,20 +235,40 @@ def train_model(config: dict, device, use_pfn=False):
     model = get_model(
         config['scenario'], config['dataset'],
         bottleneck_width=config.get('bottleneck_width', 8),
-        num_layers=config.get('num_layers', 10)
+        num_layers=config.get('num_layers', 10),
+        auto_partition=True,
+        target_width=16
     ).to(device)
     
+    pfn_logger = None
     if use_pfn:
+        pfn_log_dir = os.path.join(results_dir, 'pfn_logs')
+        pfn_logger = reset_pfn_logger(pfn_log_dir, enabled=True)
+        
         groups = model.get_parameter_groups()
         for g in groups: g['lr'] = lr
         opt = optim.Adam(groups, lr=lr)
+        
+        gb = PFNGraphBuilder(history_size=5)
+        gb.set_logger(pfn_logger)
+        
+        bn_opt = BottleneckOptimizer(
+            opt, lr, 
+            base_boost=1.5,
+            max_boost=4.0, 
+            decay_factor=0.92,
+            lr_momentum=0.8
+        )
+        bn_opt.set_logger(pfn_logger)
+        
         pfn = {
-            'gb': PFNGraphBuilder(history_size=5),  # 启用历史平滑
+            'gb': gb,
             'solver': IncrementalPushRelabel(),
-            'opt': BottleneckOptimizer(opt, lr, base_boost=1.3, max_boost=3.0, decay_factor=0.95)
+            'opt': bn_opt,
+            'logger': pfn_logger
         }
-        pfn['gb'].debug = (config['epochs'] <= 15)  # 短实验开启debug
-        pfn['opt'].debug = (config['epochs'] <= 15)
+        pfn['gb'].debug = (config['epochs'] <= 20)
+        pfn['opt'].debug = (config['epochs'] <= 20)
     else:
         opt = optim.Adam(model.parameters(), lr=lr)
         pfn = None
@@ -256,19 +278,29 @@ def train_model(config: dict, device, use_pfn=False):
     loss_hist, acc_hist = [], []
     
     for ep in range(config['epochs']):
+        if pfn:
+            pfn['opt'].current_epoch = ep
+        
         loss, step = train_epoch(model, train_loader, opt, nn.CrossEntropyLoss(), device, pfn, step, ep, config['epochs'])
         scheduler.step()
         acc = evaluate(model, test_loader, device)
         loss_hist.append(loss)
         acc_hist.append(acc)
         print(f"    [{ep+1:2d}/{config['epochs']}] loss={loss:.4f} acc={acc:.4f}")
+        
+        if pfn_logger:
+            pfn_logger.log_epoch_summary(ep, loss, acc)
+    
+    if pfn_logger:
+        pfn_logger.save_summary()
     
     return acc, loss_hist, acc_hist
 
 
 def run_scenario(dataset, cfg, epochs, batch, device, results_dir):
     name = cfg['name']
-    os.makedirs(os.path.join(results_dir, name), exist_ok=True)
+    scenario_dir = os.path.join(results_dir, name)
+    os.makedirs(scenario_dir, exist_ok=True)
     
     config = {
         'dataset': dataset, 'scenario': cfg['scenario'],
@@ -278,30 +310,15 @@ def run_scenario(dataset, cfg, epochs, batch, device, results_dir):
         'label_noise': cfg.get('label_noise', 0), 'samples': cfg.get('samples')
     }
     
-    # 检查baseline缓存
-    print(f"  [Baseline]", end=' ')
-    cached = baseline_cache.get(dataset, cfg['scenario'], config['batch_size'], config['epochs'])
-    
-    if cached:
-        print("(缓存)")
-        base_acc = cached['acc']
-        base_loss = cached['loss']
-        base_acc_hist = cached['acc_hist']
-    else:
-        print("(训练)")
-        base_acc, base_loss, base_acc_hist = train_model(config, device, False)
-        # 保存到缓存
-        baseline_cache.save(dataset, cfg['scenario'], config['batch_size'], config['epochs'],
-                           base_acc, base_loss, base_acc_hist)
+    print(f"  [Baseline]")
+    base_acc, base_loss, base_acc_hist = train_model(config, device, False, scenario_dir)
     
     print(f"  [PFN]")
-    pfn_acc, pfn_loss, pfn_acc_hist = train_model(config, device, True)
+    pfn_acc, pfn_loss, pfn_acc_hist = train_model(config, device, True, scenario_dir)
     
-    # 保存
     with open(os.path.join(results_dir, name, 'log.json'), 'w') as f:
         json.dump({'baseline': {'loss': base_loss, 'acc': base_acc_hist}, 'pfn': {'loss': pfn_loss, 'acc': pfn_acc_hist}}, f)
     
-    # 画图
     try:
         import matplotlib.pyplot as plt
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -320,7 +337,6 @@ def run_experiment(dataset='mnist', force_cpu=False, scenarios=None,
                    epochs_override=None, batch_override=None):
     device = get_device(force_cpu)
     cfg = CONFIG[dataset]
-    # Determine effective epochs/batch for this single run (fallback to first elements)
     epochs = epochs_override if epochs_override is not None else cfg['epochs_list'][0]
     batch = batch_override if batch_override is not None else cfg['batches_list'][0]
     
@@ -333,7 +349,6 @@ def run_experiment(dataset='mnist', force_cpu=False, scenarios=None,
     print(f"  Device: {device} | Epochs: {epochs} | Batch: {batch}")
     print("=" * 60)
     
-    # 过滤要运行的场景
     scenario_configs = cfg['scenarios']
     if scenarios:
         scenario_configs = [s for s in scenario_configs if s['name'] in scenarios or any(kw in s['name'].lower() for kw in scenarios)]
@@ -345,7 +360,6 @@ def run_experiment(dataset='mnist', force_cpu=False, scenarios=None,
         results.append(run_scenario(dataset, scenario_cfg, epochs, batch, device, results_dir))
         print(f"  >> Base={results[-1]['baseline']:.4f} | PFN={results[-1]['pfn']:.4f} | Δ={results[-1]['improvement']:+.4f}")
     
-    # 汇总
     print("\n" + "=" * 60)
     wins = sum(1 for r in results if r['improvement'] > 0)
     avg = sum(r['improvement'] for r in results) / len(results) if results else 0
@@ -370,8 +384,6 @@ if __name__ == '__main__':
                         help='Force CPU usage')
     parser.add_argument('--scenarios', nargs='+', default=None,
                         help='Specific scenarios to run (e.g., --scenarios 0 1 or --scenarios original bottleneck)')
-    parser.add_argument('--no-cache', action='store_true',
-                        help='Ignore cached baseline results')
     parser.add_argument('--epochs', type=int, default=None,
                         help='Override epochs (single value for all runs in this invocation)')
     parser.add_argument('--batch', type=int, default=None,
@@ -383,12 +395,6 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
-    # 处理--no-cache选项
-    if args.no_cache:
-        baseline_cache.cache_dir = './results-baseline-nocache'
-        os.makedirs(baseline_cache.cache_dir, exist_ok=True)
-    
-    # 确定目标数据集：优先 --datasets, 否则 --dataset，若都没给则默认全部数据集
     if args.datasets:
         targets = args.datasets
     elif args.dataset:
@@ -396,7 +402,6 @@ if __name__ == '__main__':
     else:
         targets = list(CONFIG.keys())
     
-    # 对每个数据集，生成 epochs_list 与 batches_list（优先使用用户提供列表/单值，否则使用该数据集的配置）
     for ds in targets:
         cfg = CONFIG[ds]
         default_epochs = cfg['epochs_list']
@@ -405,7 +410,6 @@ if __name__ == '__main__':
         epochs_list = args.epochs_list if args.epochs_list is not None else ([args.epochs] if args.epochs is not None else default_epochs)
         batches_list = args.batches_list if args.batches_list is not None else ([args.batch] if args.batch is not None else default_batches)
         
-        # 运行所有组合
         for ep in epochs_list:
             for bs in batches_list:
                 print(f"\n>> Running dataset={ds} epochs={ep} batch={bs}")

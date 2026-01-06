@@ -150,10 +150,13 @@
         const scenarios = [];
         let currentScenario = null;
         let currentType = null;
+        let anonymousScenarioIndex = 1;
 
         const scenarioHeaderRe = /^\s*\[\s*\d+\s*\/\s*\d+\]\s+([^\n].*?)$/;
-        const typeHeaderRe = /^\s*\[(Baseline|PFN)\]/i;
-        const dataLineRe = /\[\s*(\d+)\s*\/\s*\d+\]\s+.*?loss\s*=\s*([0-9]*\.?[0-9]+).*?acc\s*=\s*([0-9]*\.?[0-9]+)/i;
+        // capture optional suffix (e.g. "[Baseline] Start...")
+        const typeHeaderRe = /^\s*\[(Baseline|PFN)\](.*)$/i;
+        // Support both "[1/100] ... loss=... acc=..." and "1/100 | Loss: ... | Acc: ..."
+        const dataLineRe = /(?:\[\s*(\d+)\s*\/\s*\d+\]|\b(\d+)\s*\/\s*\d+\b).*?loss\s*[:=]\s*([0-9]*\.?[0-9]+).*?acc\s*[:=]\s*([0-9]*\.?[0-9]+)/i;
 
         for (const rawLine of lines) {
             const line = rawLine.trim();
@@ -162,42 +165,52 @@
             const sh = scenarioHeaderRe.exec(line);
             // 要保证不是 epoch 行（epoch 行一般包含 loss=），因此额外检查
             if (sh && !/loss\s*=/.test(line.toLowerCase())) {
-                currentScenario = { name: sh[0].trim(), types: { Baseline: { epochs: [], loss: [], acc: [] }, PFN: { epochs: [], loss: [], acc: [] } } };
+                currentScenario = { name: sh[1].trim(), types: { Baseline: { epochs: [], loss: [], acc: [] }, PFN: { epochs: [], loss: [], acc: [] } } };
                 scenarios.push(currentScenario);
                 currentType = null;
                 continue;
             }
 
             const th = typeHeaderRe.exec(line);
-            if (th && currentScenario) {
+            if (th) {
                 currentType = th[1];
+                const suffix = (th[2] || '').trim();
+                // If no scenario exists yet, create an anonymous one so type blocks are grouped
+                if (!currentScenario) {
+                    const name = suffix ? `Run ${anonymousScenarioIndex}: ${suffix}` : `Run ${anonymousScenarioIndex}`;
+                    currentScenario = { name, types: { Baseline: { epochs: [], loss: [], acc: [] }, PFN: { epochs: [], loss: [], acc: [] } } };
+                    scenarios.push(currentScenario);
+                    anonymousScenarioIndex++;
+                }
                 continue;
             }
 
             const dl = dataLineRe.exec(line);
             if (dl && currentScenario && currentType) {
-                currentScenario.types[currentType].epochs.push(parseInt(dl[1], 10));
-                currentScenario.types[currentType].loss.push(parseFloat(dl[2]));
-                currentScenario.types[currentType].acc.push(parseFloat(dl[3]));
+                // epoch may be in group 1 (bracketed) or group 2 (plain "1/100")
+                const epochStr = dl[1] || dl[2];
+                currentScenario.types[currentType].epochs.push(parseInt(epochStr, 10));
+                currentScenario.types[currentType].loss.push(parseFloat(dl[3]));
+                currentScenario.types[currentType].acc.push(parseFloat(dl[4]));
             }
         }
 
         return scenarios;
     }
-
+ 
     function parseData(content) {
         const loss = [], acc = [], epochs = [];
         // 支持各种空格、大小写、以及行内其他文本，尽量稳健地捕获 epoch, loss, acc
-        const lineRegex = /(?:\[\s*(\d+)\s*\/\s*\d+\])?.*?loss\s*=\s*([0-9]*\.?[0-9]+).*?acc\s*=\s*([0-9]*\.?[0-9]+)/i;
+        const lineRegex = /(?:\[\s*(\d+)\s*\/\s*\d+\]|\b(\d+)\s*\/\s*\d+\b).*?loss\s*[:=]\s*([0-9]*\.?[0-9]+).*?acc\s*[:=]\s*([0-9]*\.?[0-9]+)/i;
         const lines = content.split(/\r?\n/);
         for (const line of lines) {
             const m = lineRegex.exec(line);
             if (m) {
-                // 如果行里有 epoch，就用它；否则以序号推断（上一 epoch +1 或 1 开始）
-                const epoch = m[1] ? parseInt(m[1], 10) : (epochs.length > 0 ? epochs[epochs.length - 1] + 1 : 1);
+                // epoch may be in group 1 (bracketed) or group 2 (plain "1/100")
+                const epoch = m[1] ? parseInt(m[1], 10) : (m[2] ? parseInt(m[2], 10) : (epochs.length > 0 ? epochs[epochs.length - 1] + 1 : 1));
                 epochs.push(epoch);
-                loss.push(parseFloat(m[2]));
-                acc.push(parseFloat(m[3]));
+                loss.push(parseFloat(m[3]));
+                acc.push(parseFloat(m[4]));
             }
         }
         return { epochs, loss, acc };
