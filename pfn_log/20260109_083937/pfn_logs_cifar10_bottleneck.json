@@ -1,0 +1,4514 @@
+{
+  "metadata": {
+    "start_time": "20260109_083937",
+    "total_epochs": 150,
+    "end_time": "2026-01-09T10:09:37.735031",
+    "dataset": "cifar10",
+    "scenario": "bottleneck"
+  },
+  "epochs": {
+    "epoch_0": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.05,
+          "count": 3,
+          "steps": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.024495412844036692,
+          "count": 1,
+          "steps": [
+            4
+          ]
+        },
+        {
+          "from": "enc1_block1",
+          "to": "enc2_block3",
+          "capacity": 0.05833099431618833,
+          "count": 1,
+          "steps": [
+            5
+          ]
+        }
+      ],
+      "total_steps": 5,
+      "unique_bottlenecks": 3
+    },
+    "epoch_1": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.02,
+          "count": 7,
+          "steps": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_2": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.021669005683811658,
+          "count": 3,
+          "steps": [
+            13,
+            15,
+            17
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            14,
+            16
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 1,
+          "steps": [
+            18
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_3": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 3,
+          "steps": [
+            20,
+            22,
+            25
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.32798049259701073,
+          "count": 2,
+          "steps": [
+            19,
+            21
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            23,
+            24
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_4": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.2553855869763525,
+          "count": 3,
+          "steps": [
+            26,
+            28,
+            31
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.2733843239070942,
+          "count": 2,
+          "steps": [
+            27,
+            30
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.027938565714686687,
+          "count": 1,
+          "steps": [
+            29
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_5": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.31538137674549155,
+          "count": 4,
+          "steps": [
+            33,
+            34,
+            35,
+            36
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.109995789769139,
+          "count": 2,
+          "steps": [
+            32,
+            37
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.05,
+          "count": 1,
+          "steps": [
+            38
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_6": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.309981755666269,
+          "count": 5,
+          "steps": [
+            39,
+            40,
+            41,
+            42,
+            43
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            44
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_7": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.13339414777910322,
+          "count": 3,
+          "steps": [
+            45,
+            46,
+            49
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.32798049259701073,
+          "count": 3,
+          "steps": [
+            47,
+            50,
+            51
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            48
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_8": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.31538137674549155,
+          "count": 3,
+          "steps": [
+            52,
+            54,
+            57
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.05179987369307417,
+          "count": 2,
+          "steps": [
+            53,
+            55
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            56
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_9": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.2679847028278717,
+          "count": 5,
+          "steps": [
+            59,
+            60,
+            61,
+            62,
+            64
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.2733843239070942,
+          "count": 1,
+          "steps": [
+            58
+          ]
+        },
+        {
+          "from": "enc2_block3",
+          "to": "dec1_block1",
+          "capacity": 0.0210390498912357,
+          "count": 1,
+          "steps": [
+            63
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_10": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.109995789769139,
+          "count": 5,
+          "steps": [
+            65,
+            67,
+            68,
+            69,
+            70
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.31538137674549155,
+          "count": 1,
+          "steps": [
+            66
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_11": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.3333801136762332,
+          "count": 6,
+          "steps": [
+            71,
+            72,
+            73,
+            75,
+            76,
+            77
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.32798049259701073,
+          "count": 1,
+          "steps": [
+            74
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_12": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 5,
+          "steps": [
+            79,
+            80,
+            81,
+            82,
+            83
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.32798049259701073,
+          "count": 1,
+          "steps": [
+            78
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_13": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 3,
+          "steps": [
+            84,
+            85,
+            86
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            87,
+            88
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.2733843239070942,
+          "count": 2,
+          "steps": [
+            89,
+            90
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_14": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 6,
+          "steps": [
+            91,
+            92,
+            93,
+            94,
+            95,
+            96
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_15": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_16": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_17": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            111,
+            112,
+            113,
+            114,
+            116
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            115
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_18": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 6,
+          "steps": [
+            117,
+            118,
+            119,
+            121,
+            122,
+            123
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            120
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_19": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            124,
+            125,
+            126,
+            127,
+            128,
+            129
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_20": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            131,
+            132,
+            133,
+            135,
+            136
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            130
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            134
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_21": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 4,
+          "steps": [
+            137,
+            138,
+            141,
+            142
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            139
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            140
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_22": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.055399621079222514,
+          "count": 5,
+          "steps": [
+            143,
+            144,
+            145,
+            146,
+            147
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 2,
+          "steps": [
+            148,
+            149
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_23": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.309981755666269,
+          "count": 6,
+          "steps": [
+            150,
+            151,
+            152,
+            153,
+            154,
+            155
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_24": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            156,
+            157,
+            159,
+            160,
+            161,
+            162
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            158
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_25": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            163,
+            164,
+            166,
+            167,
+            168
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            165
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_26": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.055399621079222514,
+          "count": 7,
+          "steps": [
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_27": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            176,
+            177,
+            178,
+            179,
+            180
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            181
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_28": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_29": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            189,
+            190,
+            191,
+            192,
+            194
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            193
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_30": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            195,
+            196,
+            197,
+            198,
+            199,
+            200,
+            201
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_31": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            202,
+            204,
+            205,
+            206,
+            207
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 2,
+          "steps": [
+            203,
+            208
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_32": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 6,
+          "steps": [
+            209,
+            210,
+            211,
+            212,
+            213,
+            214
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_33": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            215,
+            217,
+            218,
+            219,
+            221
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 2,
+          "steps": [
+            216,
+            220
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_34": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 6,
+          "steps": [
+            222,
+            223,
+            224,
+            225,
+            226,
+            227
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_35": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            228,
+            230,
+            231,
+            233,
+            234
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 2,
+          "steps": [
+            229,
+            232
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_36": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 4,
+          "steps": [
+            235,
+            236,
+            237,
+            239
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            238
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.020499087783313448,
+          "count": 1,
+          "steps": [
+            240
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_37": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 5,
+          "steps": [
+            241,
+            242,
+            243,
+            244,
+            245
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 2,
+          "steps": [
+            246,
+            247
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_38": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 3,
+          "steps": [
+            251,
+            252,
+            253
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 2,
+          "steps": [
+            248,
+            249
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.03373815872570345,
+          "count": 1,
+          "steps": [
+            250
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_39": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 4,
+          "steps": [
+            254,
+            255,
+            256,
+            257
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 2,
+          "steps": [
+            258,
+            259
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            260
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_40": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 6,
+          "steps": [
+            261,
+            262,
+            263,
+            264,
+            265,
+            266
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_41": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            267,
+            268,
+            270,
+            271,
+            272,
+            273
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            269
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_42": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            274,
+            275,
+            276,
+            277,
+            278,
+            279
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_43": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            280,
+            281,
+            282,
+            283,
+            284,
+            285,
+            286
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_44": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 3,
+          "steps": [
+            287,
+            288,
+            289
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 3,
+          "steps": [
+            290,
+            291,
+            292
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_45": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            294,
+            295,
+            296,
+            299
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 3,
+          "steps": [
+            293,
+            297,
+            298
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_46": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            300,
+            301,
+            302,
+            303,
+            304,
+            305,
+            306
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_47": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            307,
+            308,
+            309,
+            310,
+            312
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            311
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_48": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 7,
+          "steps": [
+            313,
+            314,
+            315,
+            316,
+            317,
+            318,
+            319
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_49": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            320,
+            321,
+            322,
+            323,
+            324,
+            325
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_50": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            326,
+            327,
+            328,
+            329,
+            330
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            331,
+            332
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_51": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 4,
+          "steps": [
+            333,
+            334,
+            335,
+            336
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 2,
+          "steps": [
+            337,
+            338
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_52": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            339,
+            340,
+            341,
+            343,
+            344
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            342
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            345
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_53": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 6,
+          "steps": [
+            346,
+            347,
+            348,
+            349,
+            350,
+            351
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_54": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            352,
+            353,
+            354,
+            355,
+            356,
+            357,
+            358
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_55": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            359,
+            361,
+            362,
+            364
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            360
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            363
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_56": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 7,
+          "steps": [
+            365,
+            366,
+            367,
+            368,
+            369,
+            370,
+            371
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_57": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 4,
+          "steps": [
+            374,
+            375,
+            376,
+            377
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            372
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            373
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_58": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            378,
+            379,
+            380,
+            381,
+            382,
+            383,
+            384
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_59": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            385,
+            386,
+            387,
+            390
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            388,
+            389
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_60": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            391,
+            392,
+            393,
+            395,
+            396,
+            397
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            394
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_61": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            398,
+            399,
+            400,
+            402,
+            403,
+            404
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            401
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_62": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            405,
+            406,
+            407,
+            408,
+            409,
+            410
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_63": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            411,
+            412,
+            414,
+            415,
+            416,
+            417
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            413
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_64": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            418,
+            419,
+            420,
+            421,
+            422
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            423
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_65": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 4,
+          "steps": [
+            424,
+            426,
+            429,
+            430
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.2733843239070942,
+          "count": 2,
+          "steps": [
+            425,
+            428
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            427
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_66": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 5,
+          "steps": [
+            431,
+            432,
+            433,
+            434,
+            436
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            435
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_67": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            437,
+            438,
+            439,
+            440,
+            441,
+            442,
+            443
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_68": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 5,
+          "steps": [
+            445,
+            446,
+            447,
+            448,
+            449
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            444
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_69": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            453,
+            454,
+            455,
+            456
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 3,
+          "steps": [
+            450,
+            451,
+            452
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_70": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            457,
+            460,
+            461,
+            462
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            458,
+            459
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_71": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            463,
+            467,
+            468,
+            469
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            464,
+            466
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.031938285032629285,
+          "count": 1,
+          "steps": [
+            465
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_72": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            470,
+            471,
+            472,
+            473,
+            474,
+            475
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_73": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 4,
+          "steps": [
+            478,
+            479,
+            480,
+            481
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 3,
+          "steps": [
+            476,
+            477,
+            482
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_74": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            483,
+            484,
+            485,
+            486,
+            487
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.05,
+          "count": 1,
+          "steps": [
+            488
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_75": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 5,
+          "steps": [
+            490,
+            492,
+            493,
+            494,
+            495
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.023738860430846952,
+          "count": 1,
+          "steps": [
+            489
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.31538137674549155,
+          "count": 1,
+          "steps": [
+            491
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_76": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 7,
+          "steps": [
+            496,
+            497,
+            498,
+            499,
+            500,
+            501,
+            502
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_77": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            503,
+            504,
+            506,
+            507
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.05,
+          "count": 1,
+          "steps": [
+            505
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            508
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_78": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            510,
+            511,
+            513,
+            514,
+            515
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            509
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.022838923584309872,
+          "count": 1,
+          "steps": [
+            512
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_79": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 4,
+          "steps": [
+            518,
+            519,
+            520,
+            521
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 2,
+          "steps": [
+            516,
+            517
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_80": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            522,
+            523,
+            525,
+            526,
+            527,
+            528
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            524
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_81": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            529,
+            530,
+            531,
+            533,
+            534
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            532
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_82": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.309981755666269,
+          "count": 4,
+          "steps": [
+            537,
+            538,
+            539,
+            540
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.31538137674549155,
+          "count": 1,
+          "steps": [
+            535
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.0559995789769139,
+          "count": 1,
+          "steps": [
+            536
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.03049838607816995,
+          "count": 1,
+          "steps": [
+            541
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 4
+    },
+    "epoch_83": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            544,
+            545,
+            546,
+            547
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            542,
+            543
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_84": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            548,
+            550,
+            551,
+            553,
+            554
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.031938285032629285,
+          "count": 1,
+          "steps": [
+            549
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.021669005683811658,
+          "count": 1,
+          "steps": [
+            552
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_85": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            555,
+            556,
+            557,
+            558,
+            559,
+            560
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_86": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            561,
+            562,
+            563,
+            564,
+            567
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            565,
+            566
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_87": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            570,
+            571
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.055399621079222514,
+          "count": 2,
+          "steps": [
+            572,
+            573
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.05,
+          "count": 1,
+          "steps": [
+            568
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.03283822187916637,
+          "count": 1,
+          "steps": [
+            569
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 4
+    },
+    "epoch_88": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            574,
+            575,
+            576,
+            579
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.026198687811381658,
+          "count": 1,
+          "steps": [
+            577
+          ]
+        },
+        {
+          "from": "enc2_block3",
+          "to": "dec1_block1",
+          "capacity": 0.029738439407760855,
+          "count": 1,
+          "steps": [
+            578
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            580
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 4
+    },
+    "epoch_89": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 5,
+          "steps": [
+            581,
+            582,
+            584,
+            585,
+            586
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.31538137674549155,
+          "count": 1,
+          "steps": [
+            583
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_90": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.055399621079222514,
+          "count": 6,
+          "steps": [
+            587,
+            588,
+            589,
+            590,
+            592,
+            593
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            591
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_91": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 3,
+          "steps": [
+            594,
+            595,
+            596
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.0234988772717704,
+          "count": 3,
+          "steps": [
+            597,
+            598,
+            600
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.03430811872851028,
+          "count": 1,
+          "steps": [
+            599
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_92": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            601,
+            602,
+            603,
+            604,
+            605,
+            606
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_93": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            607,
+            608,
+            609,
+            610,
+            612
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            611
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "bottleneck_block0",
+          "capacity": 0.11649235141393585,
+          "count": 1,
+          "steps": [
+            613
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_94": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.2679847028278717,
+          "count": 6,
+          "steps": [
+            614,
+            615,
+            616,
+            617,
+            618,
+            619
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_95": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            620,
+            621,
+            622,
+            623,
+            624,
+            625
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            626
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_96": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 3,
+          "steps": [
+            627,
+            628,
+            629
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.055399621079222514,
+          "count": 2,
+          "steps": [
+            630,
+            631
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.03893779383902883,
+          "count": 1,
+          "steps": [
+            632
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_97": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            635,
+            636,
+            637,
+            638,
+            639
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            633,
+            634
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_98": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            640,
+            642,
+            643,
+            644,
+            645
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            641
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_99": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            646,
+            647,
+            648,
+            649,
+            650,
+            651
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.040830994316188335,
+          "count": 1,
+          "steps": [
+            652
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_100": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            654,
+            655,
+            656,
+            657,
+            658
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            653
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_101": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            659,
+            660,
+            661,
+            662,
+            663,
+            665
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            664
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_102": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 4,
+          "steps": [
+            666,
+            668,
+            669,
+            671
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.31538137674549155,
+          "count": 1,
+          "steps": [
+            667
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.07179847028278717,
+          "count": 1,
+          "steps": [
+            670
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_103": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 4,
+          "steps": [
+            674,
+            676,
+            677,
+            678
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 2,
+          "steps": [
+            672,
+            673
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.031938285032629285,
+          "count": 1,
+          "steps": [
+            675
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_104": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            679,
+            680,
+            682,
+            683,
+            684
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            681
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_105": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            686,
+            687,
+            688,
+            689
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.020499087783313448,
+          "count": 2,
+          "steps": [
+            685,
+            690
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.029108483615184897,
+          "count": 1,
+          "steps": [
+            691
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_106": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 4,
+          "steps": [
+            695,
+            696,
+            697,
+            698
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 3,
+          "steps": [
+            692,
+            693,
+            694
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_107": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            700,
+            701,
+            702,
+            703,
+            704
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.03283822187916637,
+          "count": 1,
+          "steps": [
+            699
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_108": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            705,
+            706,
+            707,
+            708,
+            711
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            709
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block2",
+          "capacity": 0.10002806820573994,
+          "count": 1,
+          "steps": [
+            710
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_109": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 3,
+          "steps": [
+            715,
+            716,
+            717
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.028398533436250085,
+          "count": 2,
+          "steps": [
+            713,
+            714
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.2553855869763525,
+          "count": 1,
+          "steps": [
+            712
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_110": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            718,
+            719,
+            720,
+            722,
+            723,
+            724
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            721
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_111": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            725,
+            726,
+            727,
+            728
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.03766788295558206,
+          "count": 1,
+          "steps": [
+            729
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.031938285032629285,
+          "count": 1,
+          "steps": [
+            730
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_112": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 6,
+          "steps": [
+            731,
+            732,
+            733,
+            735,
+            736,
+            737
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            734
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_113": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 3,
+          "steps": [
+            740,
+            741,
+            743
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            738
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.05,
+          "count": 1,
+          "steps": [
+            739
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.31538137674549155,
+          "count": 1,
+          "steps": [
+            742
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 4
+    },
+    "epoch_114": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 6,
+          "steps": [
+            744,
+            745,
+            747,
+            748,
+            749,
+            750
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            746
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_115": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            751,
+            752,
+            753,
+            754
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.027768577643674127,
+          "count": 2,
+          "steps": [
+            755,
+            756
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_116": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 5,
+          "steps": [
+            757,
+            758,
+            759,
+            760,
+            761
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.023768858325731525,
+          "count": 1,
+          "steps": [
+            762
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            763
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_117": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            764,
+            765,
+            766,
+            767,
+            768,
+            769
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_118": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            771,
+            772,
+            773,
+            774,
+            775
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            770
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.05,
+          "count": 1,
+          "steps": [
+            776
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_119": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 6,
+          "steps": [
+            777,
+            778,
+            779,
+            780,
+            781,
+            782
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_120": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            783,
+            785,
+            786,
+            787,
+            788
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 2,
+          "steps": [
+            784,
+            789
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_121": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 4,
+          "steps": [
+            790,
+            793,
+            795,
+            796
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            791
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.020199108834467756,
+          "count": 1,
+          "steps": [
+            792
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            794
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 4
+    },
+    "epoch_122": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 5,
+          "steps": [
+            797,
+            798,
+            800,
+            801,
+            802
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            799
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_123": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 3,
+          "steps": [
+            807,
+            808,
+            809
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.021399024629850535,
+          "count": 2,
+          "steps": [
+            804,
+            805
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.03646796716019928,
+          "count": 1,
+          "steps": [
+            803
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.03529804925970107,
+          "count": 1,
+          "steps": [
+            806
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 4
+    },
+    "epoch_124": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            810,
+            811,
+            812,
+            813,
+            814,
+            815
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_125": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            816,
+            817,
+            820,
+            821,
+            822
+          ]
+        },
+        {
+          "from": "enc2_block3",
+          "to": "dec1_block1",
+          "capacity": 0.040007718756578485,
+          "count": 1,
+          "steps": [
+            818
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.041667602273524666,
+          "count": 1,
+          "steps": [
+            819
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_126": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            823,
+            824,
+            825,
+            826,
+            828
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            827
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_127": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 4,
+          "steps": [
+            829,
+            830,
+            833,
+            835
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            831
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.04583730966247983,
+          "count": 1,
+          "steps": [
+            832
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            834
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 4
+    },
+    "epoch_128": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 4,
+          "steps": [
+            836,
+            837,
+            839,
+            840
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.32798049259701073,
+          "count": 2,
+          "steps": [
+            838,
+            841
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_129": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.027038628868149603,
+          "count": 2,
+          "steps": [
+            843,
+            848
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02466879517226861,
+          "count": 2,
+          "steps": [
+            844,
+            847
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.13339414777910322,
+          "count": 2,
+          "steps": [
+            845,
+            846
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.1279945266998807,
+          "count": 1,
+          "steps": [
+            842
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 4
+    },
+    "epoch_130": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 3,
+          "steps": [
+            850,
+            851,
+            853
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.033108202933127495,
+          "count": 2,
+          "steps": [
+            849,
+            852
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.04380078590976071,
+          "count": 1,
+          "steps": [
+            852
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            854
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 4
+    },
+    "epoch_131": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 4,
+          "steps": [
+            855,
+            858,
+            860,
+            861
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.2733843239070942,
+          "count": 3,
+          "steps": [
+            856,
+            857,
+            859
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_132": {
+      "critical_cuts": [
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 3,
+          "steps": [
+            863,
+            864,
+            865
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 2,
+          "steps": [
+            862,
+            867
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            866
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_133": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 7,
+          "steps": [
+            868,
+            869,
+            870,
+            871,
+            872,
+            873,
+            874
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 1
+    },
+    "epoch_134": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            875,
+            878,
+            879,
+            880
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.029298470282787172,
+          "count": 1,
+          "steps": [
+            876
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.03256824082520525,
+          "count": 1,
+          "steps": [
+            877
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_135": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 6,
+          "steps": [
+            882,
+            883,
+            884,
+            885,
+            886,
+            887
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            881
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_136": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 6,
+          "steps": [
+            889,
+            890,
+            891,
+            892,
+            893,
+            894
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            888
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 2
+    },
+    "epoch_137": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            895,
+            896,
+            897,
+            898,
+            899
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            900
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_138": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.2733843239070942,
+          "count": 3,
+          "steps": [
+            902,
+            903,
+            905
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.31538137674549155,
+          "count": 3,
+          "steps": [
+            904,
+            906,
+            907
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.03130832924005333,
+          "count": 1,
+          "steps": [
+            901
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_139": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 6,
+          "steps": [
+            908,
+            909,
+            910,
+            911,
+            912,
+            913
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_140": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 5,
+          "steps": [
+            916,
+            917,
+            918,
+            919,
+            920
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.020109115149814047,
+          "count": 1,
+          "steps": [
+            914
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            915
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_141": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            921,
+            922,
+            923,
+            924,
+            925,
+            926
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    },
+    "epoch_142": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            927,
+            928,
+            929,
+            932,
+            933
+          ]
+        },
+        {
+          "from": "enc1_block0",
+          "to": "enc2_block0",
+          "capacity": 0.05179987369307417,
+          "count": 1,
+          "steps": [
+            930
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.035568030313662194,
+          "count": 1,
+          "steps": [
+            931
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_143": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.055399621079222514,
+          "count": 4,
+          "steps": [
+            934,
+            936,
+            938,
+            939
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.025838713072766823,
+          "count": 1,
+          "steps": [
+            935
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            937
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 3
+    },
+    "epoch_144": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.0679987369307417,
+          "count": 4,
+          "steps": [
+            940,
+            941,
+            942,
+            946
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 2,
+          "steps": [
+            944,
+            945
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.025208757280190862,
+          "count": 1,
+          "steps": [
+            943
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_145": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 5,
+          "steps": [
+            947,
+            948,
+            949,
+            950,
+            952
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            951
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_146": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.109995789769139,
+          "count": 5,
+          "steps": [
+            953,
+            956,
+            957,
+            958,
+            959
+          ]
+        },
+        {
+          "from": "enc2_block1",
+          "to": "dec1_block0",
+          "capacity": 0.033768156620588026,
+          "count": 1,
+          "steps": [
+            954
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.020769068837274574,
+          "count": 1,
+          "steps": [
+            955
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 3
+    },
+    "epoch_147": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.24998596589713,
+          "count": 5,
+          "steps": [
+            961,
+            962,
+            963,
+            964,
+            965
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            960
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 2
+    },
+    "epoch_148": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 4,
+          "steps": [
+            966,
+            970,
+            971,
+            972
+          ]
+        },
+        {
+          "from": "Source",
+          "to": "enc1_block1",
+          "capacity": 0.3333801136762332,
+          "count": 1,
+          "steps": [
+            967
+          ]
+        },
+        {
+          "from": "enc2_block0",
+          "to": "dec1_block0",
+          "capacity": 0.02,
+          "count": 1,
+          "steps": [
+            968
+          ]
+        },
+        {
+          "from": "enc2_block2",
+          "to": "dec1_block1",
+          "capacity": 0.035838011367623324,
+          "count": 1,
+          "steps": [
+            969
+          ]
+        }
+      ],
+      "total_steps": 7,
+      "unique_bottlenecks": 4
+    },
+    "epoch_149": {
+      "critical_cuts": [
+        {
+          "from": "Source",
+          "to": "enc1_block0",
+          "capacity": 0.05,
+          "count": 6,
+          "steps": [
+            973,
+            974,
+            975,
+            976,
+            977,
+            978
+          ]
+        }
+      ],
+      "total_steps": 6,
+      "unique_bottlenecks": 1
+    }
+  }
+}

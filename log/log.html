@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>PFN Data Plotter</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        textarea { width: 100%; height: 150px; font-family: monospace; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+        .btn { background: #1a73e8; color: white; border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; margin: 15px 0; font-weight: bold; }
+        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .card-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chart-grid canvas { width: 100% !important; height: 350px !important; max-width: 650px; max-height: 350px; min-width: 350px; min-height: 350px; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <textarea id="logInput" placeholder="在此粘贴完整日志..."></textarea>
+    <div style="margin-top:8px;">
+        <input id="fileInput" type="file" accept=".csv,text/csv" />
+        <button id="uploadCsvBtn" class="btn" onclick="uploadCsv()">上传 CSV 并生成图表</button>
+        <span style="margin-left:10px; color:#666;">（CSV 格式: dataset,batch_size,scenario,mode,epoch,loss,acc）</span>
+    </div>
+    <!-- updated label: now only filters train: progress lines, not standard [epoch/total] loss lines -->
+    <label style="display:inline-block; margin-left:10px; font-size:14px;">
+        <input id="filterProgress" type="checkbox" checked> 仅过滤带进度条的每批次 loss/acc 行（例如：train: ... [16/200] loss=...）
+    </label>
+    <button id="genBtn" class="btn" onclick="run()">生成图表</button>
+
+    <div id="summary" class="card" style="display:none; margin-top:10px;">
+        <div class="card-title">解析统计</div>
+        <div id="summaryText">共解析到 <strong id="totalCount">0</strong> 个数据点</div>
+    </div>
+
+    <div id="displayArea"></div>
+</div>
+
+<script>
+    let globalLossRange = null;
+    let globalAccRange = null;
+    const chartsRegistry = [];
+
+    function clearPreviousCharts() {
+        while (chartsRegistry.length) {
+            const it = chartsRegistry.pop();
+            try { it.lossChart && it.lossChart.destroy(); } catch (e) {}
+            try { it.accChart && it.accChart.destroy(); } catch (e) {}
+        }
+    }
+
+    function run() {
+        // parse from textarea (log text)
+        clearPreviousCharts();
+        const text = document.getElementById('logInput').value;
+        const filterProgress = document.getElementById('filterProgress').checked;
+        const scenarios = parseAll(text, filterProgress);
+        renderScenarios(scenarios);
+    }
+
+    // renderScenarios: shared renderer for both parsed logs and CSV input
+    function renderScenarios(scenarios) {
+        clearPreviousCharts();
+        const display = document.getElementById('displayArea');
+        const summary = document.getElementById('summary');
+        const totalCountEl = document.getElementById('totalCount');
+        display.innerHTML = '';
+        summary.style.display = 'none';
+        totalCountEl.textContent = '0';
+
+        let totalCount = 0;
+        let gLossMin = Infinity, gLossMax = -Infinity;
+        let gAccMin = Infinity, gAccMax = -Infinity;
+        scenarios.forEach(({ types }) => {
+            ['Baseline', 'PFN'].forEach(t => {
+                const d = types[t];
+                if (d && d.loss.length > 0) {
+                    gLossMin = Math.min(gLossMin, ...d.loss);
+                    gLossMax = Math.max(gLossMax, ...d.loss);
+                    gAccMin = Math.min(gAccMin, ...d.acc);
+                    gAccMax = Math.max(gAccMax, ...d.acc);
+                }
+            });
+        });
+        if (gLossMin !== Infinity) {
+            const lpad = (gLossMax - gLossMin) * 0.02 || gLossMax * 0.02;
+            globalLossRange = { min: gLossMin - lpad, max: gLossMax + lpad };
+        } else {
+            globalLossRange = null;
+        }
+        if (gAccMin !== Infinity) {
+            const apad = (gAccMax - gAccMin) * 0.02 || 0.01;
+            let aMin = Math.max(0, gAccMin - apad);
+            let aMax = Math.min(1, (gAccMax + apad) || 1);
+            globalAccRange = { min: aMin, max: aMax };
+        } else {
+            globalAccRange = null;
+        }
+
+        scenarios.forEach(({ name: sName, types }) => {
+            const baselineData = types['Baseline'];
+            const pfnData = types['PFN'];
+
+            ['Baseline', 'PFN'].forEach(type => {
+                const data = types[type];
+                if (data && data.loss.length > 0) {
+                    createChartCard(sName, type, data, display);
+                    totalCount += data.epochs.length;
+                }
+            });
+
+            if (baselineData && baselineData.loss.length > 0 && pfnData && pfnData.loss.length > 0) {
+                createCombinedCard(sName, baselineData, pfnData, display);
+            }
+        });
+
+        totalCountEl.textContent = String(totalCount);
+        summary.style.display = 'block';
+    }
+
+    // parseAll now accepts a second boolean param `ignoreProgress` (default true)
+    function parseAll(text, ignoreProgress = true) {
+        const lines = text.split(/\r?\n/);
+        const scenarios = [];
+        let currentScenario = null;
+        let currentType = null;
+        let anonymousScenarioIndex = 1;
+
+        const scenarioHeaderRe = /^\s*\[\s*\d+\s*\/\s*\d+\]\s+([^\n].*?)$/;
+        const typeHeaderRe = /^\s*\[(Baseline|PFN)\](.*)$/i;
+        const dataLineRe = /(?:\[\s*(\d+)\s*\/\s*\d+\]|\b(\d+)\s*\/\s*\d+\b).*?loss\s*[:=]\s*([0-9]*\.?[0-9]+).*?acc\s*[:=]\s*([0-9]*\.?[0-9]+)/i;
+
+        // pattern to detect progress/noise lines — only match lines with "train:" progress bar plus bracketed batch and loss
+        const progressNoiseRe = /\btrain:\b.*\[\s*\d+\s*\/\s*\d+\].*loss\s*[:=]\s*[0-9]*\.?[0-9]+/i;
+
+        for (const rawLine of lines) {
+            const line = rawLine.trim();
+            if (!line) continue;
+
+            // Optionally skip progress/noise lines (only train: progress lines)
+            if (ignoreProgress && progressNoiseRe.test(rawLine)) continue;
+
+            const sh = scenarioHeaderRe.exec(line);
+            if (sh && !/loss\s*=/.test(line.toLowerCase())) {
+                currentScenario = { name: sh[1].trim(), types: { Baseline: { epochs: [], loss: [], acc: [] }, PFN: { epochs: [], loss: [], acc: [] } } };
+                scenarios.push(currentScenario);
+                currentType = null;
+                continue;
+            }
+
+            const th = typeHeaderRe.exec(line);
+            if (th) {
+                currentType = th[1];
+                const suffix = (th[2] || '').trim();
+                if (!currentScenario) {
+                    const name = suffix ? `Run ${anonymousScenarioIndex}: ${suffix}` : `Run ${anonymousScenarioIndex}`;
+                    currentScenario = { name, types: { Baseline: { epochs: [], loss: [], acc: [] }, PFN: { epochs: [], loss: [], acc: [] } } };
+                    scenarios.push(currentScenario);
+                    anonymousScenarioIndex++;
+                }
+                continue;
+            }
+
+            const dl = dataLineRe.exec(line);
+            if (dl && currentScenario && currentType) {
+                const epochStr = dl[1] || dl[2];
+                currentScenario.types[currentType].epochs.push(parseInt(epochStr, 10));
+                currentScenario.types[currentType].loss.push(parseFloat(dl[3]));
+                currentScenario.types[currentType].acc.push(parseFloat(dl[4]));
+            }
+        }
+
+        return scenarios;
+    }
+
+    function createChartCard(sName, type, data, container) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        const cardId = `chart-${sName}-${type}`.replace(/\s+/g, '-');
+        
+        card.innerHTML = `
+            <div class="card-title">${sName} - <span style="color:${type==='PFN'?'#d93025':'#1a73e8'}">${type}</span></div>
+            <div class="chart-grid">
+                <canvas id="loss-${cardId}" width="650" height="350"></canvas>
+                <canvas id="acc-${cardId}" width="650" height="350"></canvas>
+            </div>
+        `;
+        container.appendChild(card);
+
+        const n = data.epochs.length;
+        const lossPoints = data.epochs.map((e, i) => ({ x: i, y: data.loss[i], epoch: e }));
+        const accPoints = data.epochs.map((e, i) => ({ x: i, y: data.acc[i], epoch: e }));
+
+        const xMin = 0;
+        const xMax = n - 1 + 0.5;
+
+        const commonOptionsBase = {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'linear',
+                    display: true,
+                    min: xMin,
+                    max: xMax,
+                    title: { display: true, text: 'Epoch' },
+                    ticks: {
+                        callback: function(value) {
+                            const idx = Math.round(value);
+                            if (Math.abs(value - idx) > 1e-6) return '';
+                            if (idx >= 0 && idx < n) return data.epochs[idx];
+                            return '';
+                        },
+                        stepSize: 30,
+                        autoSkip: false,
+                        precision: 0,
+                        maxRotation: 45,
+                        align: 'center'
+                    },
+                    grid: { display: true }
+                }
+            },
+            plugins: {
+                legend: { display: true },
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(context) {
+                            const d = context.raw;
+                            const val = (d && d.y !== undefined) ? d.y : context.parsed.y;
+                            const fixed = (context.dataset.label && /loss/i.test(context.dataset.label)) ? val.toFixed(4) : val.toFixed(4);
+                            if (d && d.epoch !== undefined) return `${context.dataset.label}: ${fixed} (epoch ${d.epoch})`;
+                            return `${context.dataset.label}: ${fixed}`;
+                        }
+                    }
+                }
+            },
+            elements: {
+                point: { radius: 0 },
+                line: { tension: 0, borderCapStyle: 'butt', borderJoinStyle: 'miter' }
+            }
+        };
+
+        const lossMin = Math.min(...data.loss);
+        const lossMax = Math.max(...data.loss);
+        const lossPadding = (lossMax - lossMin) * 0.02 || lossMax * 0.02;
+        const lossOptions = JSON.parse(JSON.stringify(commonOptionsBase));
+        if (globalLossRange) {
+            lossOptions.scales.y = { min: globalLossRange.min, max: globalLossRange.max, ticks: { precision: 4 } };
+        } else {
+            lossOptions.scales.y = { min: lossMin - lossPadding, max: lossMax + lossPadding, ticks: { precision: 4 } };
+        }
+
+        const lossChart = new Chart(document.getElementById(`loss-${cardId}`), {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: 'Loss',
+                        data: lossPoints,
+                        borderColor: '#d93025',
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0
+                    }
+                ]
+            },
+            options: lossOptions
+        });
+
+        const accMin = Math.min(...data.acc);
+        const accMax = Math.max(...data.acc);
+        const accPadding = (accMax - accMin) * 0.02 || 0.01;
+        let accYMin = accMin - accPadding;
+        let accYMax = accMax + accPadding;
+        accYMin = Math.max(0, accYMin);
+        accYMax = Math.min(1, accYMax || 1);
+
+        const accOptions = JSON.parse(JSON.stringify(commonOptionsBase));
+        if (globalAccRange) {
+            accOptions.scales.y = { min: globalAccRange.min, max: globalAccRange.max, ticks: { precision: 4 } };
+        } else {
+            accOptions.scales.y = { min: accYMin, max: accYMax, ticks: { precision: 4 } };
+        }
+
+        const accChart = new Chart(document.getElementById(`acc-${cardId}`), {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: 'Accuracy',
+                        data: accPoints,
+                        borderColor: '#1e8e3e',
+                        borderWidth: 2.0,
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0
+                    }
+                ]
+            },
+            options: accOptions
+        });
+
+        chartsRegistry.push({ name: sName, type, lossChart, accChart });
+    }
+
+    function createCombinedCard(sName, baseline, pfn, container) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        const cardId = `combined-${sName}`.replace(/\s+/g, '-');
+
+        card.innerHTML = `
+            <div class="card-title">${sName} - <span style="color:#6a1b9a">Combined (Baseline vs PFN)</span></div>
+            <div class="chart-grid">
+                <canvas id="combined-loss-${cardId}" width="650" height="350"></canvas>
+                <canvas id="combined-acc-${cardId}" width="650" height="350"></canvas>
+            </div>
+        `;
+        container.appendChild(card);
+
+        // Filter out epoch=0 for combined charts
+        const baseFilteredIndices = baseline.epochs.map((e, idx) => e !== 0 ? idx : -1).filter(idx => idx !== -1);
+        const pfnFilteredIndices = pfn.epochs.map((e, idx) => e !== 0 ? idx : -1).filter(idx => idx !== -1);
+
+        const baseLossPts = baseFilteredIndices.map(idx => ({ x: baseline.epochs[idx], y: baseline.loss[idx], epoch: baseline.epochs[idx] }));
+        const pfnLossPts = pfnFilteredIndices.map(idx => ({ x: pfn.epochs[idx], y: pfn.loss[idx], epoch: pfn.epochs[idx] }));
+        const baseAccPts = baseFilteredIndices.map(idx => ({ x: baseline.epochs[idx], y: baseline.acc[idx], epoch: baseline.epochs[idx] }));
+        const pfnAccPts = pfnFilteredIndices.map(idx => ({ x: pfn.epochs[idx], y: pfn.acc[idx], epoch: pfn.epochs[idx] }));
+
+        const allEpochs = baseline.epochs.concat(pfn.epochs);
+        const xMin = Math.min(...allEpochs);
+        const xMax = Math.max(...allEpochs);
+
+        const xScale = {
+            type: 'linear',
+            display: true,
+            min: xMin,
+            max: xMax,
+            title: { display: true, text: 'Epoch' },
+            ticks: {
+                callback: function(value) {
+                    const v = Math.round(value);
+                    if (Math.abs(value - v) > 1e-6) return '';
+                    return v;
+                },
+                stepSize: 30,
+                autoSkip: false,
+                precision: 0
+            },
+            grid: { display: true }
+        };
+
+        const lossOptions = {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+                x: xScale,
+                y: globalLossRange ? { min: globalLossRange.min, max: globalLossRange.max, ticks: { precision: 4 } } : {}
+            },
+            plugins: {
+                legend: { display: true },
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(context) {
+                            const d = context.raw;
+                            const val = (d && d.y !== undefined) ? d.y : context.parsed.y;
+                            const fixed = val.toFixed(4);
+                            if (d && d.epoch !== undefined) return `${context.dataset.label}: ${fixed} (epoch ${d.epoch})`;
+                            return `${context.dataset.label}: ${fixed}`;
+                        }
+                    }
+                }
+            },
+            elements: { point: { radius: 0 }, line: { tension: 0 } }
+        };
+
+        const lossChart = new Chart(document.getElementById(`combined-loss-${cardId}`), {
+            type: 'line',
+            data: {
+                datasets: [
+                    { label: 'Baseline Loss', data: baseLossPts, borderColor: '#1a73e8', borderWidth: 2, pointRadius: 0, fill: false, tension: 0 },
+                    { label: 'PFN Loss', data: pfnLossPts, borderColor: '#d93025', borderWidth: 2, pointRadius: 0, fill: false, tension: 0 }
+                ]
+            },
+            options: lossOptions
+        });
+ 
+        const accOptions = {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+                x: xScale,
+                y: globalAccRange ? { min: globalAccRange.min, max: globalAccRange.max, ticks: { precision: 4 } } : { min: 0, max: 1 }
+            },
+            plugins: lossOptions.plugins,
+            elements: { point: { radius: 0 }, line: { tension: 0 } }
+        };
+
+        const accChart = new Chart(document.getElementById(`combined-acc-${cardId}`), {
+            type: 'line',
+            data: {
+                datasets: [
+                    { label: 'Baseline Acc', data: baseAccPts, borderColor: '#1a73e8', borderWidth: 2, pointRadius: 0, fill: false, tension: 0 },
+                    { label: 'PFN Acc', data: pfnAccPts, borderColor: '#1e8e3e', borderWidth: 2, pointRadius: 0, fill: false, tension: 0 }
+                ]
+            },
+            options: accOptions
+        });
+
+        chartsRegistry.push({ name: sName, type: 'combined', lossChart, accChart });
+    }
+
+    // parse CSV text -> scenarios array (compatible with parseAll output)
+    function parseCsvText(csvText) {
+        const rows = csvText.split(/\r?\n/).filter(r => r.trim() !== '');
+        if (rows.length === 0) return [];
+        // simple CSV parser for fields possibly quoted
+        function splitRow(row) {
+            const res = [];
+            let cur = '', inQ = false;
+            for (let i=0;i<row.length;i++) {
+                const ch = row[i];
+                if (ch === '"' ) { inQ = !inQ; continue; }
+                if (ch === ',' && !inQ) { res.push(cur); cur=''; continue; }
+                cur += ch;
+            }
+            res.push(cur);
+            return res.map(s => s.trim());
+        }
+        const header = splitRow(rows[0]).map(h => h.toLowerCase());
+        const idx = name => header.indexOf(name);
+        const col_scenario = idx('scenario'), col_mode = idx('mode'), col_epoch = idx('epoch'), col_loss = idx('loss'), col_acc = idx('acc');
+        const map = new Map();
+        for (let i=1;i<rows.length;i++) {
+            const fields = splitRow(rows[i]);
+            if (fields.length <= Math.max(col_scenario,col_mode,col_epoch,col_loss,col_acc)) continue;
+            const scen = fields[col_scenario] || 'global';
+            const mode = (fields[col_mode]||'').toLowerCase().includes('pfn') ? 'PFN' : 'Baseline';
+            const epoch = parseInt(fields[col_epoch],10) || 0;
+            const loss = parseFloat(fields[col_loss]) || 0;
+            const acc = parseFloat(fields[col_acc]) || 0;
+            const key = scen;
+            if (!map.has(key)) {
+                map.set(key, { name: key, types: { Baseline: { epochs:[], loss:[], acc:[] }, PFN: { epochs:[], loss:[], acc:[] } }});
+            }
+            const entry = map.get(key);
+            const t = entry.types[mode];
+            t.epochs.push(epoch); t.loss.push(loss); t.acc.push(acc);
+        }
+        // sort by epoch within each type
+        const scenarios = [];
+        for (const v of map.values()) {
+            ['Baseline','PFN'].forEach(k => {
+                const arr = v.types[k].epochs.map((e,i)=>({e,loss:v.types[k].loss[i],acc:v.types[k].acc[i]}));
+                arr.sort((a,b)=>a.e-b.e);
+                v.types[k].epochs = arr.map(x=>x.e);
+                v.types[k].loss = arr.map(x=>x.loss);
+                v.types[k].acc = arr.map(x=>x.acc);
+            });
+            scenarios.push(v);
+        }
+        return scenarios;
+    }
+
+    function uploadCsv() {
+        const f = document.getElementById('fileInput').files[0];
+        if (!f) { alert('请选择 CSV 文件'); return; }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const scenarios = parseCsvText(text);
+            renderScenarios(scenarios);
+        };
+        reader.readAsText(f, 'utf-8');
+    }
+</script>
+
+</body>
+</html>

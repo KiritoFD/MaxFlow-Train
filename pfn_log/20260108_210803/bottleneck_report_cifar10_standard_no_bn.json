@@ -1,0 +1,127 @@
+{
+  "dataset": "cifar10",
+  "scenario": "standard_no_bn",
+  "total_unique_bottlenecks": 15,
+  "bottlenecks": [
+    {
+      "node": "conv1_block2",
+      "appearance_count": 1630,
+      "first_epoch": 50,
+      "last_epoch": 149,
+      "epoch_span": 100,
+      "persistence": "1630.0%"
+    },
+    {
+      "node": "conv1_block3",
+      "appearance_count": 1618,
+      "first_epoch": 50,
+      "last_epoch": 149,
+      "epoch_span": 100,
+      "persistence": "1618.0%"
+    },
+    {
+      "node": "conv1_block1",
+      "appearance_count": 1507,
+      "first_epoch": 50,
+      "last_epoch": 149,
+      "epoch_span": 100,
+      "persistence": "1507.0%"
+    },
+    {
+      "node": "conv1_block0",
+      "appearance_count": 1237,
+      "first_epoch": 50,
+      "last_epoch": 149,
+      "epoch_span": 100,
+      "persistence": "1237.0%"
+    },
+    {
+      "node": "conv2_block1",
+      "appearance_count": 516,
+      "first_epoch": 51,
+      "last_epoch": 149,
+      "epoch_span": 99,
+      "persistence": "521.2%"
+    },
+    {
+      "node": "conv2_block2",
+      "appearance_count": 516,
+      "first_epoch": 51,
+      "last_epoch": 149,
+      "epoch_span": 99,
+      "persistence": "521.2%"
+    },
+    {
+      "node": "conv2_block0",
+      "appearance_count": 393,
+      "first_epoch": 51,
+      "last_epoch": 147,
+      "epoch_span": 97,
+      "persistence": "405.2%"
+    },
+    {
+      "node": "conv3_block0",
+      "appearance_count": 393,
+      "first_epoch": 51,
+      "last_epoch": 147,
+      "epoch_span": 97,
+      "persistence": "405.2%"
+    },
+    {
+      "node": "conv2_block3",
+      "appearance_count": 123,
+      "first_epoch": 39,
+      "last_epoch": 149,
+      "epoch_span": 111,
+      "persistence": "110.8%"
+    },
+    {
+      "node": "conv2_block4",
+      "appearance_count": 123,
+      "first_epoch": 39,
+      "last_epoch": 149,
+      "epoch_span": 111,
+      "persistence": "110.8%"
+    },
+    {
+      "node": "conv3_block4",
+      "appearance_count": 123,
+      "first_epoch": 39,
+      "last_epoch": 149,
+      "epoch_span": 111,
+      "persistence": "110.8%"
+    },
+    {
+      "node": "conv2_block5",
+      "appearance_count": 12,
+      "first_epoch": 4,
+      "last_epoch": 51,
+      "epoch_span": 48,
+      "persistence": "25.0%"
+    },
+    {
+      "node": "conv2_block6",
+      "appearance_count": 12,
+      "first_epoch": 4,
+      "last_epoch": 51,
+      "epoch_span": 48,
+      "persistence": "25.0%"
+    },
+    {
+      "node": "conv2_block7",
+      "appearance_count": 12,
+      "first_epoch": 4,
+      "last_epoch": 51,
+      "epoch_span": 48,
+      "persistence": "25.0%"
+    },
+    {
+      "node": "conv3_block12",
+      "appearance_count": 12,
+      "first_epoch": 4,
+      "last_epoch": 51,
+      "epoch_span": 48,
+      "persistence": "25.0%"
+    }
+  ]
+}

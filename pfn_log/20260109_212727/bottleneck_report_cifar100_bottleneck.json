@@ -1,0 +1,71 @@
+{
+  "dataset": "cifar100",
+  "scenario": "bottleneck",
+  "total_unique_bottlenecks": 8,
+  "bottlenecks": [
+    {
+      "node": "dec1_block1",
+      "appearance_count": 12,
+      "first_epoch": 206,
+      "last_epoch": 245,
+      "epoch_span": 40,
+      "persistence": "30.0%"
+    },
+    {
+      "node": "dec1_block0",
+      "appearance_count": 8,
+      "first_epoch": 206,
+      "last_epoch": 245,
+      "epoch_span": 40,
+      "persistence": "20.0%"
+    },
+    {
+      "node": "enc1_block0",
+      "appearance_count": 7,
+      "first_epoch": 203,
+      "last_epoch": 245,
+      "epoch_span": 43,
+      "persistence": "16.3%"
+    },
+    {
+      "node": "dec2_block0",
+      "appearance_count": 4,
+      "first_epoch": 206,
+      "last_epoch": 245,
+      "epoch_span": 40,
+      "persistence": "10.0%"
+    },
+    {
+      "node": "enc2_block1",
+      "appearance_count": 3,
+      "first_epoch": 203,
+      "last_epoch": 235,
+      "epoch_span": 33,
+      "persistence": "9.1%"
+    },
+    {
+      "node": "enc2_block2",
+      "appearance_count": 3,
+      "first_epoch": 203,
+      "last_epoch": 235,
+      "epoch_span": 33,
+      "persistence": "9.1%"
+    },
+    {
+      "node": "enc2_block3",
+      "appearance_count": 3,
+      "first_epoch": 203,
+      "last_epoch": 235,
+      "epoch_span": 33,
+      "persistence": "9.1%"
+    },
+    {
+      "node": "bottleneck_block0",
+      "appearance_count": 3,
+      "first_epoch": 203,
+      "last_epoch": 235,
+      "epoch_span": 33,
+      "persistence": "9.1%"
+    }
+  ]
+}

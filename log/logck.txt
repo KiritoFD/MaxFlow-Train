@@ -1,0 +1,261 @@
+
+>> Running dataset=cifar10 epochs=50 batch=256
+============================================================
+  PFN EXPERIMENT - CIFAR10
+  Device: cuda | Epochs: 50 | Batch: 256
+  Logs: ./pfn_log\20260108_201511
+  Checkpoints: ./checkpoints
+============================================================
+
+[1/5] 0.Original
+----------------------------------------
+  [Baseline] (训练)
+Using writable root: /kaggle/working/data
+    Loaded CIFAR10 (train=True) from C:\Users\xy\Github\MaxFlow-Train\data
+    Loaded CIFAR10 (train=False) from C:\Users\xy\Github\MaxFlow-Train\data
+  [PartitionedCNN] Auto-partition=True
+    Layer1: 4 blocks × 16 ch
+    Layer2: 8 blocks × 16 ch
+    Layer3: 16 blocks × 16 ch
+    [ 1/50] loss=1.7418 acc=0.4285
+    [ 2/50] loss=1.4593 acc=0.4942
+    [ 3/50] loss=1.3430 acc=0.5110
+    [ 4/50] loss=1.2713 acc=0.5592
+    [ 5/50] loss=1.2122 acc=0.5624
+    [ 6/50] loss=1.1745 acc=0.5868
+    [ 7/50] loss=1.1387 acc=0.5661
+    [ 8/50] loss=1.1095 acc=0.5824
+    [ 9/50] loss=1.0866 acc=0.5957
+    [10/50] loss=1.0640 acc=0.6234
+    [11/50] loss=1.0456 acc=0.6332
+    [12/50] loss=1.0272 acc=0.6394
+    [13/50] loss=1.0061 acc=0.6451
+    [14/50] loss=0.9883 acc=0.6448
+    [15/50] loss=0.9793 acc=0.6455
+    [16/50] loss=0.9653 acc=0.6382
+    [17/50] loss=0.9545 acc=0.6341
+    [18/50] loss=0.9383 acc=0.6574
+    [19/50] loss=0.9309 acc=0.6635
+    [20/50] loss=0.9166 acc=0.6642
+    [21/50] loss=0.9133 acc=0.6629
+    [22/50] loss=0.9026 acc=0.6831
+    [23/50] loss=0.8937 acc=0.6756
+    [24/50] loss=0.8878 acc=0.6792
+    [25/50] loss=0.8795 acc=0.6762
+    [26/50] loss=0.8729 acc=0.6780
+    [27/50] loss=0.8603 acc=0.6913
+    [28/50] loss=0.8581 acc=0.6836
+    [29/50] loss=0.8525 acc=0.6871
+    [30/50] loss=0.8472 acc=0.6859
+    [31/50] loss=0.8413 acc=0.6954
+    [32/50] loss=0.8390 acc=0.6996
+    [33/50] loss=0.8328 acc=0.6956
+    [34/50] loss=0.8281 acc=0.6994
+    [35/50] loss=0.8256 acc=0.7009
+    [36/50] loss=0.8217 acc=0.7019
+    [37/50] loss=0.8185 acc=0.7022
+    [38/50] loss=0.8148 acc=0.7004
+    [39/50] loss=0.8141 acc=0.7061
+    [40/50] loss=0.8134 acc=0.7060
+    [41/50] loss=0.8095 acc=0.7095
+    [42/50] loss=0.8089 acc=0.7078
+    [43/50] loss=0.8073 acc=0.7109
+    [44/50] loss=0.8053 acc=0.7092
+    [45/50] loss=0.8032 acc=0.7089
+    [46/50] loss=0.8034 acc=0.7084
+    [47/50] loss=0.8018 acc=0.7106
+    [48/50] loss=0.8010 acc=0.7098
+    [49/50] loss=0.8016 acc=0.7106
+    [50/50] loss=0.8037 acc=0.7098
+  [Checkpoint] Saved at epoch 50 to ./checkpoints\cifar10_baseline_standard_epoch49.pt
+  [PFN]
+Using writable root: /kaggle/working/data
+    Loaded CIFAR10 (train=True) from C:\Users\xy\Github\MaxFlow-Train\data
+    Loaded CIFAR10 (train=False) from C:\Users\xy\Github\MaxFlow-Train\data
+  [PartitionedCNN] Auto-partition=True
+    Layer1: 4 blocks × 16 ch
+    Layer2: 8 blocks × 16 ch
+    Layer3: 16 blocks × 16 ch
+    [ 1/50] loss=1.7426 acc=0.4462
+    [ 2/50] loss=1.4526 acc=0.4989
+    [ 3/50] loss=1.3303 acc=0.5463
+    [ 4/50] loss=1.2477 acc=0.5343
+    [ 5/50] loss=1.1927 acc=0.5895
+    [ 6/50] loss=1.1520 acc=0.5865
+    [ 7/50] loss=1.1088 acc=0.6136
+    [ 8/50] loss=1.0766 acc=0.5975
+    [ 9/50] loss=1.0472 acc=0.6158
+    [10/50] loss=1.0215 acc=0.6393
+    [11/50] loss=0.9997 acc=0.6497
+    [12/50] loss=0.9821 acc=0.6548
+    [13/50] loss=0.9642 acc=0.6418
+    [14/50] loss=0.9503 acc=0.6518
+    [15/50] loss=0.9302 acc=0.6518
+    [16/50] loss=0.9167 acc=0.6476
+    [17/50] loss=0.8981 acc=0.6666
+    [18/50] loss=0.8887 acc=0.6737
+    [19/50] loss=0.8752 acc=0.6804
+    [20/50] loss=0.8661 acc=0.6771
+    [21/50] loss=0.8527 acc=0.6961
+    [22/50] loss=0.8411 acc=0.6900
+    [23/50] loss=0.8352 acc=0.6648
+    [24/50] loss=0.8202 acc=0.6945
+    [25/50] loss=0.8158 acc=0.6809
+    [26/50] loss=0.8041 acc=0.6811
+    [27/50] loss=0.7977 acc=0.6884
+    [28/50] loss=0.7897 acc=0.7016
+    [29/50] loss=0.7847 acc=0.7079
+    [30/50] loss=0.7770 acc=0.7224
+    [31/50] loss=0.7668 acc=0.7203
+    [32/50] loss=0.7603 acc=0.7137
+    [33/50] loss=0.7594 acc=0.7189
+    [34/50] loss=0.7488 acc=0.7140
+    [35/50] loss=0.7392 acc=0.7081
+    [36/50] loss=0.7397 acc=0.7208
+    [37/50] loss=0.7295 acc=0.7251
+    [38/50] loss=0.7188 acc=0.7190
+    [39/50] loss=0.7214 acc=0.7019
+    [40/50] loss=0.7135 acc=0.7053
+    [41/50] loss=0.7070 acc=0.7306
+    [42/50] loss=0.7018 acc=0.7145
+    [43/50] loss=0.6983 acc=0.7263
+    [44/50] loss=0.6960 acc=0.7175
+    [45/50] loss=0.6906 acc=0.7266
+    [46/50] loss=0.6822 acc=0.7314
+    [47/50] loss=0.6846 acc=0.7275
+    [48/50] loss=0.6739 acc=0.7386
+    [49/50] loss=0.6718 acc=0.7305
+    [50/50] loss=0.6638 acc=0.7445
+  [Checkpoint] Saved at epoch 50 to ./checkpoints\cifar10_pfn_standard_epoch49.pt
+  [Bottleneck Report] Saved to ./pfn_log\20260108_201511\bottleneck_report_cifar10_standard.json
+  [Log] Saved to ./pfn_log\20260108_201511\pfn_logs_cifar10_standard.json
+  [Visualization] Saved to ./results_20260108_201511/cifar10_e50_b256\0.Original\bottleneck_location_by_epoch.png
+
+  [Critical Cuts Summary for standard]
+    Epoch   0: Source->conv1_block1
+    Epoch   1: Source->conv1_block1
+    Epoch   2: Source->conv1_block1
+    Epoch   3: Source->conv1_block0
+    Epoch   4: Source->conv1_block0
+    Epoch   5: Source->conv1_block0
+    Epoch   6: Source->conv1_block0
+    Epoch   7: Source->conv1_block0
+    Epoch   8: Source->conv1_block1
+    Epoch   9: Source->conv1_block1
+    Epoch  10: Source->conv1_block0
+    Epoch  11: Source->conv1_block1
+    Epoch  12: Source->conv1_block3
+    Epoch  13: Source->conv1_block3
+    Epoch  14: Source->conv1_block1
+    Epoch  15: Source->conv1_block0
+    Epoch  16: Source->conv1_block0
+    Epoch  17: Source->conv1_block1
+    Epoch  18: Source->conv1_block0
+    Epoch  19: Source->conv1_block0
+    Epoch  20: Source->conv1_block1
+    Epoch  21: Source->conv1_block0
+    Epoch  22: Source->conv1_block1
+    Epoch  23: Source->conv1_block1
+    Epoch  24: Source->conv1_block0
+    Epoch  25: Source->conv1_block0
+    Epoch  26: Source->conv1_block1
+    Epoch  27: Source->conv1_block1
+    Epoch  28: Source->conv1_block0
+    Epoch  29: Source->conv1_block3
+    Epoch  30: Source->conv1_block1
+    Epoch  31: Source->conv1_block0
+    Epoch  32: Source->conv1_block1
+    Epoch  33: Source->conv1_block1
+    Epoch  34: Source->conv1_block0
+    Epoch  35: Source->conv1_block0
+    Epoch  36: Source->conv1_block3
+    Epoch  37: Source->conv1_block0
+    Epoch  38: Source->conv1_block1
+    Epoch  39: Source->conv1_block1
+    Epoch  40: Source->conv1_block0
+    Epoch  41: Source->conv1_block1
+    Epoch  42: Source->conv1_block1
+    Epoch  43: Source->conv1_block0
+    Epoch  44: Source->conv1_block1
+    Epoch  45: Source->conv1_block1
+    Epoch  46: Source->conv1_block1
+    Epoch  47: Source->conv1_block0
+    Epoch  48: Source->conv1_block0
+    Epoch  49: Source->conv1_block3
+  >> Base=0.7098 | PFN=0.7445 | Δ=+0.0347
+
+[2/5] 1.NoBN
+----------------------------------------
+  [Baseline] (训练)
+Using writable root: /kaggle/working/data
+    Loaded CIFAR10 (train=True) from C:\Users\xy\Github\MaxFlow-Train\data
+    Loaded CIFAR10 (train=False) from C:\Users\xy\Github\MaxFlow-Train\data
+  [PartitionedCNN] Auto-partition=True
+    Layer1: 4 blocks × 16 ch
+    Layer2: 8 blocks × 16 ch
+    Layer3: 16 blocks × 16 ch
+    [ 1/50] loss=2.0446 acc=0.3301
+    [ 2/50] loss=1.8170 acc=0.3680
+    [ 3/50] loss=1.7196 acc=0.4090
+    [ 4/50] loss=1.6581 acc=0.4286
+    [ 5/50] loss=1.6173 acc=0.4394
+    [ 6/50] loss=1.5810 acc=0.4394
+    [ 7/50] loss=1.5481 acc=0.4574
+    [ 8/50] loss=1.5246 acc=0.4645
+    [ 9/50] loss=1.5045 acc=0.4666
+    [10/50] loss=1.4778 acc=0.4626
+    [11/50] loss=1.4562 acc=0.4838
+    [12/50] loss=1.4429 acc=0.4774
+    [13/50] loss=1.4297 acc=0.5059
+    [14/50] loss=1.4128 acc=0.5001
+    [15/50] loss=1.3979 acc=0.5017
+    [16/50] loss=1.3850 acc=0.5091
+    [17/50] loss=1.3750 acc=0.5076
+    [18/50] loss=1.3615 acc=0.5122
+    [19/50] loss=1.3509 acc=0.5215
+    [20/50] loss=1.3442 acc=0.5298
+    [21/50] loss=1.3280 acc=0.5290
+    [22/50] loss=1.3275 acc=0.5280
+    [23/50] loss=1.3174 acc=0.5345
+    [24/50] loss=1.3091 acc=0.5409
+    [25/50] loss=1.3020 acc=0.5337
+    [26/50] loss=1.2960 acc=0.5427
+    [27/50] loss=1.2899 acc=0.5523
+    [28/50] loss=1.2806 acc=0.5511
+    [29/50] loss=1.2789 acc=0.5445
+    [30/50] loss=1.2724 acc=0.5533
+    [31/50] loss=1.2686 acc=0.5571
+    [32/50] loss=1.2659 acc=0.5451
+    [33/50] loss=1.2606 acc=0.5516
+    [34/50] loss=1.2557 acc=0.5624
+    [35/50] loss=1.2548 acc=0.5595
+    [36/50] loss=1.2499 acc=0.5539
+    [37/50] loss=1.2486 acc=0.5571
+    [38/50] loss=1.2479 acc=0.5564
+    [39/50] loss=1.2468 acc=0.5670
+    [40/50] loss=1.2406 acc=0.5597
+    [41/50] loss=1.2406 acc=0.5602
+    [42/50] loss=1.2412 acc=0.5590
+    [43/50] loss=1.2387 acc=0.5645
+    [44/50] loss=1.2373 acc=0.5661
+    [45/50] loss=1.2348 acc=0.5652
+    [46/50] loss=1.2335 acc=0.5606
+    [47/50] loss=1.2351 acc=0.5654
+    [48/50] loss=1.2332 acc=0.5639
+    [49/50] loss=1.2334 acc=0.5636
+    [50/50] loss=1.2326 acc=0.5641
+  [Checkpoint] Saved at epoch 50 to ./checkpoints\cifar10_baseline_standard_no_bn_epoch49.pt
+  [PFN]
+Using writable root: /kaggle/working/data
+    Loaded CIFAR10 (train=True) from C:\Users\xy\Github\MaxFlow-Train\data
+    Loaded CIFAR10 (train=False) from C:\Users\xy\Github\MaxFlow-Train\data
+  [PartitionedCNN] Auto-partition=True
+    Layer1: 4 blocks × 16 ch
+    Layer2: 8 blocks × 16 ch
+    Layer3: 16 blocks × 16 ch
+    [ 1/50] loss=2.0459 acc=0.3024
+    [ 2/50] loss=1.8109 acc=0.3663
+    [ 3/50] loss=1.6942 acc=0.4173
+    [ 4/50] loss=1.6167 acc=0.4324
+    [ 5/50] loss=1.5581 acc=0.4542
+    [ 6/50] loss=1.5092 acc=0.4681

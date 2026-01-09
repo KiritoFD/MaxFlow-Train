@@ -1,0 +1,95 @@
+{
+  "dataset": "cifar10",
+  "scenario": "standard_no_bn",
+  "total_unique_bottlenecks": 11,
+  "bottlenecks": [
+    {
+      "node": "conv1_block2",
+      "appearance_count": 650,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "1300.0%"
+    },
+    {
+      "node": "conv1_block3",
+      "appearance_count": 650,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "1300.0%"
+    },
+    {
+      "node": "conv1_block1",
+      "appearance_count": 595,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "1190.0%"
+    },
+    {
+      "node": "conv1_block0",
+      "appearance_count": 412,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "824.0%"
+    },
+    {
+      "node": "conv2_block1",
+      "appearance_count": 293,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "586.0%"
+    },
+    {
+      "node": "conv2_block2",
+      "appearance_count": 293,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "586.0%"
+    },
+    {
+      "node": "conv2_block0",
+      "appearance_count": 238,
+      "first_epoch": 150,
+      "last_epoch": 196,
+      "epoch_span": 47,
+      "persistence": "506.4%"
+    },
+    {
+      "node": "conv3_block0",
+      "appearance_count": 238,
+      "first_epoch": 150,
+      "last_epoch": 196,
+      "epoch_span": 47,
+      "persistence": "506.4%"
+    },
+    {
+      "node": "conv2_block3",
+      "appearance_count": 55,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "110.0%"
+    },
+    {
+      "node": "conv2_block4",
+      "appearance_count": 55,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "110.0%"
+    },
+    {
+      "node": "conv3_block4",
+      "appearance_count": 55,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "110.0%"
+    }
+  ]
+}

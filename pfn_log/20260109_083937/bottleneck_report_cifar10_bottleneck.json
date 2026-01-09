@@ -1,0 +1,87 @@
+{
+  "dataset": "cifar10",
+  "scenario": "bottleneck",
+  "total_unique_bottlenecks": 10,
+  "bottlenecks": [
+    {
+      "node": "enc1_block0",
+      "appearance_count": 807,
+      "first_epoch": 0,
+      "last_epoch": 149,
+      "epoch_span": 150,
+      "persistence": "538.0%"
+    },
+    {
+      "node": "enc1_block1",
+      "appearance_count": 807,
+      "first_epoch": 0,
+      "last_epoch": 149,
+      "epoch_span": 150,
+      "persistence": "538.0%"
+    },
+    {
+      "node": "dec1_block1",
+      "appearance_count": 496,
+      "first_epoch": 0,
+      "last_epoch": 148,
+      "epoch_span": 149,
+      "persistence": "332.9%"
+    },
+    {
+      "node": "dec1_block0",
+      "appearance_count": 487,
+      "first_epoch": 0,
+      "last_epoch": 148,
+      "epoch_span": 149,
+      "persistence": "326.8%"
+    },
+    {
+      "node": "dec2_block0",
+      "appearance_count": 166,
+      "first_epoch": 0,
+      "last_epoch": 148,
+      "epoch_span": 149,
+      "persistence": "111.4%"
+    },
+    {
+      "node": "enc2_block1",
+      "appearance_count": 23,
+      "first_epoch": 0,
+      "last_epoch": 145,
+      "epoch_span": 146,
+      "persistence": "15.8%"
+    },
+    {
+      "node": "enc2_block2",
+      "appearance_count": 23,
+      "first_epoch": 0,
+      "last_epoch": 145,
+      "epoch_span": 146,
+      "persistence": "15.8%"
+    },
+    {
+      "node": "bottleneck_block0",
+      "appearance_count": 23,
+      "first_epoch": 0,
+      "last_epoch": 145,
+      "epoch_span": 146,
+      "persistence": "15.8%"
+    },
+    {
+      "node": "enc2_block0",
+      "appearance_count": 16,
+      "first_epoch": 5,
+      "last_epoch": 142,
+      "epoch_span": 138,
+      "persistence": "11.6%"
+    },
+    {
+      "node": "enc2_block3",
+      "appearance_count": 7,
+      "first_epoch": 0,
+      "last_epoch": 145,
+      "epoch_span": 146,
+      "persistence": "4.8%"
+    }
+  ]
+}

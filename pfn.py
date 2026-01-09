@@ -1,12 +1,13 @@
+#%%writefile pfn.py
 """
 Parameter Flow Network (PFN) - 联合优化版
-核心改进：基于排名的容量系统 (Rank-Based Capacity)
+核心改进：基于排名的容量系统 (Rank-Based Capacity) + 动态连接范围
 """
 
 import torch
 import numpy as np
-import os
 import json
+import os
 from datetime import datetime
 from torch.optim import Optimizer
 from collections import deque, defaultdict
@@ -14,197 +15,173 @@ from typing import Dict, List, Set, Tuple, Optional
 
 
 class PFNLogger:
-    """PFN专用日志记录器"""
+    """PFN流和最小割的日志记录器"""
     
-    def __init__(self, log_dir: str = './pfn_logs', enabled: bool = True):
-        self.enabled = enabled
+    def __init__(self, log_dir: str = './pfn_log'):
         self.log_dir = log_dir
-        self.log_file = None
-        self.session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.step_logs: List[Dict] = []
-        self.summary_stats = {
-            'total_steps': 0,
-            'bottleneck_frequency': defaultdict(int),
-            'lr_history': defaultdict(list),
-            'flow_deficit_history': [],
-            'max_flow_history': []
+        os.makedirs(log_dir, exist_ok=True)
+        self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.run_dir = os.path.join(log_dir, self.timestamp)
+        os.makedirs(self.run_dir, exist_ok=True)
+        self.epoch_logs = defaultdict(lambda: {'critical_cuts': [], 'steps_count': 0})
+        self.metadata = {
+            'start_time': self.timestamp,
+            'total_epochs': 0
         }
+        self.bottleneck_evolution = defaultdict(lambda: {'first_epoch': None, 'last_epoch': None, 'count': 0})
+    
+    def log_step(self, step: int, epoch: int, cut_edges: List[Tuple[int, int]],
+                 flow_dict: Dict[Tuple[int, int], float], capacity_matrix: np.ndarray,
+                 S_set: Set[int], T_set: Set[int], graph_builder, max_flow: float,
+                 flow_deficit: float = 0.0):
+        """记录单步的最小割信息，按epoch聚合"""
         
-        if enabled:
-            os.makedirs(log_dir, exist_ok=True)
-            self.log_file = os.path.join(log_dir, f'pfn_{self.session_id}.log')
-            self._write_header()
-    
-    def _write_header(self):
-        """写入日志头"""
-        with open(self.log_file, 'w') as f:
-            f.write("=" * 80 + "\n")
-            f.write(f"PFN Debug Log - Session {self.session_id}\n")
-            f.write(f"Started at: {datetime.now().isoformat()}\n")
-            f.write("=" * 80 + "\n\n")
-    
-    def log_step(self, step: int, epoch: int, data: Dict):
-        """记录每个PFN步骤的详细信息"""
-        if not self.enabled:
+        # 找出关键割（容量最小的割边）
+        if not cut_edges:
             return
         
-        self.summary_stats['total_steps'] += 1
+        cut_capacities = []
+        cut_info = []
         
-        # 记录到内存
-        log_entry = {
-            'step': step,
-            'epoch': epoch,
-            'timestamp': datetime.now().isoformat(),
-            **data
-        }
-        self.step_logs.append(log_entry)
+        for u, v in cut_edges:
+            u_name = graph_builder.get_node_name(u)
+            v_name = graph_builder.get_node_name(v)
+            cap = float(capacity_matrix[u][v]) if u < capacity_matrix.shape[0] and v < capacity_matrix.shape[1] else 0.0
+            
+            cut_capacities.append(cap)
+            cut_info.append({
+                'from': u_name,
+                'to': v_name,
+                'capacity': cap,
+                'is_source': (u == graph_builder.source),
+                'is_sink': (v == graph_builder.sink)
+            })
         
-        # 更新统计
-        if 'flow_deficit' in data:
-            self.summary_stats['flow_deficit_history'].append(data['flow_deficit'])
-        if 'max_flow' in data:
-            self.summary_stats['max_flow_history'].append(data['max_flow'])
-        if 'bottlenecks' in data:
-            for bn in data['bottlenecks']:
-                self.summary_stats['bottleneck_frequency'][bn] += 1
+        # 找出最小容量的关键割
+        if cut_capacities:
+            min_cap = min(cut_capacities)
+            critical_indices = [i for i, cap in enumerate(cut_capacities) if cap <= min_cap * 1.01]  # 允许1%误差
+            
+            # 记录关键割信息
+            for idx in critical_indices:
+                edge = cut_info[idx]
+                critical_cut = {
+                    'from': edge['from'],
+                    'to': edge['to'],
+                    'capacity': edge['capacity'],
+                    'step': step,
+                    'flow': float(flow_dict.get((edge['from_id'], edge['to_id']), 0.0)) if 'from_id' in cut_info[idx] else 0.0
+                }
+                self.epoch_logs[epoch]['critical_cuts'].append(critical_cut)
         
-        # 写入文件
-        with open(self.log_file, 'a') as f:
-            f.write(f"\n[Step {step}] Epoch {epoch}\n")
-            f.write("-" * 40 + "\n")
-            
-            if 'graph_info' in data:
-                gi = data['graph_info']
-                f.write(f"  Graph Topology:\n")
-                f.write(f"    - Nodes: {gi.get('num_nodes', 'N/A')}\n")
-                f.write(f"    - Layers: {gi.get('num_layers', 'N/A')}\n")
-                f.write(f"    - Blocks per layer: {gi.get('blocks_per_layer', 'N/A')}\n")
-            
-            if 'flow_info' in data:
-                fi = data['flow_info']
-                f.write(f"  Flow Analysis:\n")
-                f.write(f"    - Total Potential: {fi.get('total_potential', 0):.4f}\n")
-                f.write(f"    - Max Flow: {fi.get('max_flow', 0):.4f}\n")
-                f.write(f"    - Flow Deficit: {fi.get('flow_deficit', 0):.4f}\n")
-                f.write(f"    - S set size: {fi.get('s_size', 0)}\n")
-                f.write(f"    - T set size: {fi.get('t_size', 0)}\n")
-            
-            if 'cut_edges' in data:
-                f.write(f"  Cut Edges (Top 10):\n")
-                for i, edge in enumerate(data['cut_edges'][:10]):
-                    f.write(f"    {i+1}. {edge}\n")
-            
-            if 'bottlenecks' in data:
-                f.write(f"  Identified Bottlenecks:\n")
-                for bn in data['bottlenecks'][:10]:
-                    f.write(f"    - {bn}\n")
-            
-            if 'lr_updates' in data:
-                f.write(f"  LR Updates:\n")
-                for name, lr_info in list(data['lr_updates'].items())[:10]:
-                    f.write(f"    - {name}: {lr_info['old']:.6f} -> {lr_info['new']:.6f}")
-                    if lr_info.get('boosted'):
-                        f.write(f" [BOOSTED x{lr_info.get('boost_factor', 1):.2f}]")
-                    f.write("\n")
-            
-            if 'rank_energy' in data:
-                f.write(f"  Rank Energy (per layer):\n")
-                for layer, energies in data['rank_energy'].items():
-                    avg_e = np.mean(energies) if energies else 0
-                    min_e = np.min(energies) if energies else 0
-                    max_e = np.max(energies) if energies else 0
-                    f.write(f"    - {layer}: avg={avg_e:.3f}, min={min_e:.3f}, max={max_e:.3f}, blocks={len(energies)}\n")
+        self.epoch_logs[epoch]['steps_count'] += 1
+        
+        # 更新瓶颈节点演变
+        for edge in cut_info:
+            node_name = edge['to']
+            if node_name != "Sink" and not edge['is_sink']:
+                if self.bottleneck_evolution[node_name]['first_epoch'] is None:
+                    self.bottleneck_evolution[node_name]['first_epoch'] = epoch
+                self.bottleneck_evolution[node_name]['last_epoch'] = epoch
+                self.bottleneck_evolution[node_name]['count'] += 1
     
-    def log_epoch_summary(self, epoch: int, train_loss: float, test_acc: float):
-        """记录epoch摘要"""
-        if not self.enabled:
+    def save_logs(self, dataset: str = '', scenario: str = ''):
+        """保存按epoch聚合的日志"""
+        if not self.epoch_logs:
+            print(f"  [Log] No logs to save")
             return
         
-        with open(self.log_file, 'a') as f:
-            f.write("\n" + "=" * 60 + "\n")
-            f.write(f"EPOCH {epoch} SUMMARY\n")
-            f.write("=" * 60 + "\n")
-            f.write(f"  Train Loss: {train_loss:.4f}\n")
-            f.write(f"  Test Accuracy: {test_acc:.4f}\n")
+        self.metadata['end_time'] = datetime.now().isoformat()
+        self.metadata['total_epochs'] = len(self.epoch_logs)
+        self.metadata['dataset'] = dataset
+        self.metadata['scenario'] = scenario
+        
+        # 按epoch组织日志
+        epochs_data = {}
+        for epoch in sorted(self.epoch_logs.keys()):
+            epoch_data = self.epoch_logs[epoch]
             
-            # 统计本epoch的瓶颈频率
-            recent_logs = [l for l in self.step_logs if l.get('epoch') == epoch]
-            if recent_logs:
-                bn_counts = defaultdict(int)
-                for log in recent_logs:
-                    for bn in log.get('bottlenecks', []):
-                        bn_counts[bn] += 1
-                
-                if bn_counts:
-                    f.write(f"  Top Bottlenecks this Epoch:\n")
-                    sorted_bns = sorted(bn_counts.items(), key=lambda x: -x[1])[:5]
-                    for bn, count in sorted_bns:
-                        f.write(f"    - {bn}: {count} times\n")
-    
-    def save_summary(self):
-        """保存完整的统计摘要"""
-        if not self.enabled:
-            return
-        
-        summary_file = os.path.join(self.log_dir, f'pfn_summary_{self.session_id}.json')
-        
-        # 转换defaultdict为普通dict
-        summary = {
-            'session_id': self.session_id,
-            'total_steps': self.summary_stats['total_steps'],
-            'bottleneck_frequency': dict(self.summary_stats['bottleneck_frequency']),
-            'flow_deficit_stats': {
-                'mean': float(np.mean(self.summary_stats['flow_deficit_history'])) if self.summary_stats['flow_deficit_history'] else 0,
-                'std': float(np.std(self.summary_stats['flow_deficit_history'])) if self.summary_stats['flow_deficit_history'] else 0,
-                'max': float(np.max(self.summary_stats['flow_deficit_history'])) if self.summary_stats['flow_deficit_history'] else 0,
-            },
-            'max_flow_stats': {
-                'mean': float(np.mean(self.summary_stats['max_flow_history'])) if self.summary_stats['max_flow_history'] else 0,
-                'final': float(self.summary_stats['max_flow_history'][-1]) if self.summary_stats['max_flow_history'] else 0,
+            # 统计该epoch的关键割
+            critical_cuts = epoch_data['critical_cuts']
+            cut_summary = {}
+            for cut in critical_cuts:
+                key = f"{cut['from']}->{cut['to']}"
+                if key not in cut_summary:
+                    cut_summary[key] = {
+                        'from': cut['from'],
+                        'to': cut['to'],
+                        'capacity': cut['capacity'],
+                        'count': 0,
+                        'steps': []
+                    }
+                cut_summary[key]['count'] += 1
+                cut_summary[key]['steps'].append(cut['step'])
+            
+            # 按出现频率排序
+            sorted_cuts = sorted(cut_summary.items(), key=lambda x: x[1]['count'], reverse=True)
+            
+            epochs_data[f"epoch_{epoch}"] = {
+                'critical_cuts': [cut for _, cut in sorted_cuts],
+                'total_steps': epoch_data['steps_count'],
+                'unique_bottlenecks': len(cut_summary)
             }
+        
+        output = {
+            'metadata': self.metadata,
+            'epochs': epochs_data
         }
         
-        with open(summary_file, 'w') as f:
-            json.dump(summary, f, indent=2)
+        log_file = os.path.join(self.run_dir, f'pfn_logs_{dataset}_{scenario}.json')
+        with open(log_file, 'w') as f:
+            json.dump(output, f, indent=2)
         
-        # 写入日志文件结尾
-        with open(self.log_file, 'a') as f:
-            f.write("\n" + "=" * 80 + "\n")
-            f.write("SESSION COMPLETE\n")
-            f.write("=" * 80 + "\n")
-            f.write(f"Total PFN Steps: {summary['total_steps']}\n")
-            f.write(f"Flow Deficit - Mean: {summary['flow_deficit_stats']['mean']:.4f}, Max: {summary['flow_deficit_stats']['max']:.4f}\n")
-            
-            # Top 10 最频繁的瓶颈
-            if summary['bottleneck_frequency']:
-                f.write("\nTop 10 Most Frequent Bottlenecks:\n")
-                sorted_bns = sorted(summary['bottleneck_frequency'].items(), key=lambda x: -x[1])[:10]
-                for bn, count in sorted_bns:
-                    f.write(f"  {bn}: {count} times\n")
+        # 保存瓶颈演变报告
+        self._save_bottleneck_report(dataset, scenario)
         
-        print(f"[PFN] Summary saved to {summary_file}")
-        return summary_file
-
-
-# 全局logger实例
-_pfn_logger: Optional[PFNLogger] = None
-
-def get_pfn_logger(log_dir: str = './pfn_logs', enabled: bool = True) -> PFNLogger:
-    """获取或创建PFN日志记录器"""
-    global _pfn_logger
-    if _pfn_logger is None:
-        _pfn_logger = PFNLogger(log_dir, enabled)
-    return _pfn_logger
-
-def reset_pfn_logger(log_dir: str = './pfn_logs', enabled: bool = True) -> PFNLogger:
-    """重置PFN日志记录器（用于新实验）"""
-    global _pfn_logger
-    _pfn_logger = PFNLogger(log_dir, enabled)
-    return _pfn_logger
+        print(f"  [Log] Saved to {log_file}")
+    
+    def _save_bottleneck_report(self, dataset: str = '', scenario: str = ''):
+        """生成按epoch的瓶颈演变报告"""
+        if not self.bottleneck_evolution:
+            return
+        
+        # 按出现频率排序
+        bottleneck_list = sorted(
+            self.bottleneck_evolution.items(),
+            key=lambda x: x[1]['count'],
+            reverse=True
+        )
+        
+        report = {
+            'dataset': dataset,
+            'scenario': scenario,
+            'total_unique_bottlenecks': len(bottleneck_list),
+            'bottlenecks': [
+                {
+                    'node': name,
+                    'appearance_count': info['count'],
+                    'first_epoch': info['first_epoch'],
+                    'last_epoch': info['last_epoch'],
+                    'epoch_span': info['last_epoch'] - info['first_epoch'] + 1,
+                    'persistence': f"{info['count'] / (info['last_epoch'] - info['first_epoch'] + 1) * 100:.1f}%"
+                }
+                for name, info in bottleneck_list[:20]
+            ]
+        }
+        
+        report_file = os.path.join(self.run_dir, f'bottleneck_report_{dataset}_{scenario}.json')
+        with open(report_file, 'w') as f:
+            json.dump(report, f, indent=2)
+        
+        print(f"  [Bottleneck Report] Saved to {report_file}")
+    
+    def get_run_dir(self) -> str:
+        """获取当前运行的日志目录"""
+        return self.run_dir
 
 
 class PFNGraphBuilder:
-    """联合优化版图构建器：排名容量 + 动态连接窗口"""
+    """联合优化版图构建器：排名容量 + 动态连接"""
     
     def __init__(self, use_hessian_approx: bool = False, depth_penalty: bool = True, history_size: int = 5):
         self.num_nodes = 0
@@ -220,16 +197,18 @@ class PFNGraphBuilder:
         self.debug = True
         self.enable_skip_connections = True
         self.skip_distance = 2
-        self.logger: Optional[PFNLogger] = None
+        # 修改方案2：降低动量，提高灵敏度
+        self.ema_alpha = 0.3  # 从原来的隐式0.9降到0.5，2-3步即可反映变化
+        self.layer_widths: Dict[str, int] = {}  # 新增：记录各层宽度
     
-    def set_logger(self, logger: PFNLogger):
-        """设置日志记录器"""
-        self.logger = logger
-    
-    def setup_topology(self, gradients: Dict[str, List[torch.Tensor]]):
+    def setup_topology(self, gradients: Dict[str, List[torch.Tensor]], layer_widths: Optional[Dict[str, int]] = None):
         self.layer_names = list(gradients.keys())
         self.node_map = {}
         self.node_names = {}
+        
+        # 记录层宽度信息
+        if layer_widths:
+            self.layer_widths = layer_widths
         
         current_id = 1
         for layer_name in self.layer_names:
@@ -255,26 +234,30 @@ class PFNGraphBuilder:
             # 1. 计算原始模长
             raw_norms = np.array([g.norm(2).item() for g in blocks])
             
-            # 2. 如果全层梯度极小（死层），给予最低容量
-            if np.max(raw_norms) < 1e-9:
+            # 2. 处理极端情况：全层梯度极小（死层）
+            if np.max(raw_norms) < 1e-12:
                 normalized[layer_name] = [0.1] * num_blocks
                 continue
             
-            # 3. 计算相对排名 (0.0 ~ 1.0)
+            # 3. 单块情况
             if num_blocks == 1:
                 normalized[layer_name] = [1.0]
-            else:
-                # argsort两次得到排名
-                ranks = np.argsort(np.argsort(raw_norms)).astype(float)
-                max_rank = num_blocks - 1
-                # 线性映射到 [0.1, 1.0] 区间，保证最弱的也有底限
-                rank_scores = 0.1 + 0.9 * (ranks / max_rank)
-                normalized[layer_name] = rank_scores.tolist()
+                continue
+            
+            # 4. 计算相对排名 (0.0 ~ 1.0)
+            # argsort两次得到排名：[0.1, 0.5, 0.2] -> rank [0, 2, 1]
+            ranks = np.argsort(np.argsort(raw_norms)).astype(float)
+            max_rank = num_blocks - 1
+            
+            # 线性映射到 [0.1, 1.0] 区间
+            # 最弱的也有0.1的底限，防止断流
+            rank_scores = 0.05 + 0.95 * (ranks / max_rank)
+            normalized[layer_name] = rank_scores.tolist()
         
         return normalized
     
     def _get_smoothed_energy(self, current_energy: Dict[str, List[float]]) -> Dict[str, List[float]]:
-        """使用指数移动平均平滑能量值"""
+        """使用快速响应的EMA平滑能量值（修改方案2：提高灵敏度）"""
         self.grad_history.append(current_energy)
         if len(self.grad_history) > self.history_size:
             self.grad_history.pop(0)
@@ -282,7 +265,10 @@ class PFNGraphBuilder:
         if len(self.grad_history) == 1:
             return current_energy
         
-        weights = np.exp(np.linspace(-1, 0, len(self.grad_history)))
+        # 修改：使用更激进的权重，让最新值占主导
+        # 原来是exp(-1,0)约等于(0.37, 1.0)，现在改为更快响应
+        num_hist = len(self.grad_history)
+        weights = np.array([self.ema_alpha ** (num_hist - 1 - i) for i in range(num_hist)])
         weights /= weights.sum()
         
         smoothed = {}
@@ -301,37 +287,46 @@ class PFNGraphBuilder:
         
         return smoothed
     
-    def build_graph(self, gradients: Dict[str, List[torch.Tensor]]) -> Tuple[np.ndarray, Dict]:
-        """构建流网络：排名容量 + 动态连接窗口"""
-        self.setup_topology(gradients)
+    def build_graph(self, gradients: Dict[str, List[torch.Tensor]], layer_widths: Optional[Dict[str, int]] = None) -> Tuple[np.ndarray, Dict]:
+        """构建流网络：排名容量 + 动态连接范围 + 宽度校正（修改方案3）"""
+        self.setup_topology(gradients, layer_widths)
         capacity = np.zeros((self.num_nodes, self.num_nodes))
         
-        # === 使用排名能量替代绝对范数 ===
         rank_energy = self._compute_rank_based_energy(gradients)
         smoothed_energy = self._get_smoothed_energy(rank_energy)
         
         num_layers = len(self.layer_names)
         
-        # 记录每层的分块数（用于日志）
-        blocks_per_layer = {name: len(smoothed_energy[name]) for name in self.layer_names}
+        # 计算各层的宽度因子（用于Sink连接校正）
+        width_factors = {}
+        if self.layer_widths:
+            max_width = max(self.layer_widths.values()) if self.layer_widths else 1
+            for name, width in self.layer_widths.items():
+                # 宽度因子：窄层获得更高的Sink容量，防止成为固定瓶颈
+                width_factors[name] = np.sqrt(max_width / (width + 1e-6))
         
         for layer_idx, layer_name in enumerate(self.layer_names):
             energies = smoothed_energy[layer_name]
-            num_curr_blocks = len(energies)
+            num_blocks = len(energies)
+            
+            # 获取该层的宽度因子
+            layer_width_factor = width_factors.get(layer_name, 1.0)
             
             for b_idx, energy in enumerate(energies):
                 u = self.node_map[(layer_name, b_idx)]
                 cap_val = energy
                 
+                # 1. Source -> 第一层
                 if layer_idx == 0:
                     capacity[self.source][u] = cap_val
                 
+                # 2. 层间连接：动态连接范围
                 if layer_idx < num_layers - 1:
                     next_layer = self.layer_names[layer_idx + 1]
                     next_energies = smoothed_energy[next_layer]
                     num_next_blocks = len(next_energies)
                     
-                    ratio = num_next_blocks / num_curr_blocks
+                    ratio = num_next_blocks / num_blocks
                     window = max(1, int(np.ceil(ratio))) + 1
                     
                     center_next = int(b_idx * ratio)
@@ -340,33 +335,30 @@ class PFNGraphBuilder:
                     
                     for nb_idx in range(start_next, end_next):
                         v = self.node_map[(next_layer, nb_idx)]
-                        edge_cap = next_energies[nb_idx]
                         weight = 1.0 if nb_idx == center_next else 0.5
-                        capacity[u][v] = edge_cap * weight
+                        capacity[u][v] = next_energies[nb_idx] * weight
                 
+                # 3. 跨层连接（虚拟残差）
                 if self.enable_skip_connections and layer_idx < num_layers - self.skip_distance:
                     skip_layer = self.layer_names[layer_idx + self.skip_distance]
                     skip_energies = smoothed_energy[skip_layer]
                     num_skip_blocks = len(skip_energies)
                     
-                    skip_ratio = num_skip_blocks / num_curr_blocks
-                    target_idx = min(int(b_idx * skip_ratio), num_skip_blocks - 1)
+                    skip_ratio = num_skip_blocks / num_blocks
+                    skip_idx = min(int(b_idx * skip_ratio), num_skip_blocks - 1)
                     
-                    v = self.node_map[(skip_layer, target_idx)]
-                    skip_cap = skip_energies[target_idx] * 0.2
-                    capacity[u][v] = max(skip_cap, 0.05)
+                    v = self.node_map[(skip_layer, skip_idx)]
+                    skip_cap = cap_val * 0.15
+                    capacity[u][v] = max(skip_cap, 0.02)
                 
+                # 4. 最后一层 -> Sink（修改方案3：宽度校正）
                 if layer_idx == num_layers - 1:
-                    capacity[u][self.sink] = cap_val
+                    # 原来：capacity[u][self.sink] = cap_val
+                    # 修改：窄层（如FC）获得更高的Sink容量，防止固定瓶颈
+                    sink_cap = cap_val * layer_width_factor
+                    capacity[u][self.sink] = sink_cap
         
-        metadata = {
-            'rank_energy': smoothed_energy,
-            'blocks_per_layer': blocks_per_layer,
-            'num_nodes': self.num_nodes,
-            'num_layers': num_layers
-        }
-        
-        return capacity, metadata
+        return capacity, {'rank_energy': smoothed_energy, 'width_factors': width_factors}
     
     def get_node_name(self, node_idx: int) -> str:
         if node_idx == self.source: return "Source"
@@ -458,11 +450,12 @@ DinicSolver = IncrementalPushRelabel
 
 
 class BottleneckOptimizer:
-    """联合优化版瓶颈优化器：支持动态分块数"""
+    """联合优化版瓶颈优化器：累积补偿机制（修改方案1）"""
     
     def __init__(self, optimizer: Optimizer, base_lr: float = 0.001,
-                 base_boost: float = 1.5, max_boost: float = 4.0, decay_factor: float = 0.92,
-                 lr_momentum: float = 0.8):
+                 base_boost: float = 1.8, max_boost: float = 20.0, decay_factor: float = 0.90,
+                 lr_momentum: float = 0.75, logger: Optional['PFNLogger'] = None,
+                 accumulated_boost: float = 1.3):  # 新增：累积增益系数
         self.optimizer = optimizer
         self.base_lr = base_lr
         self.base_boost = base_boost
@@ -476,65 +469,53 @@ class BottleneckOptimizer:
         self.step_count = 0
         self.target_lrs: Dict[str, float] = {name: base_lr for name in self.name_to_idx}
         self.persistent_bottleneck: Dict[str, int] = defaultdict(int)
-        self.logger: Optional[PFNLogger] = None
-        self.current_epoch = 0
-    
-    def set_logger(self, logger: PFNLogger):
-        """设置日志记录器"""
         self.logger = logger
+        # 修改方案1：累积补偿
+        self.accumulated_boost = accumulated_boost
+        self.max_accumulated_boost = 40.0  # 累积boost上限
+    
+    def _node_to_param_group(self, node_name: str) -> Optional[str]:
+        # 精确匹配
+        if node_name in self.name_to_idx:
+            return node_name
+        # 模糊匹配：处理 "layer0_block0" -> "L0_B0" 的映射
+        for name in self.name_to_idx:
+            # 提取layer和block编号进行匹配
+            if node_name.replace('layer', 'L').replace('_block', '_B') == name:
+                return name
+            if node_name.replace('conv', 'conv').replace('_block', '_block') == name:
+                return name
+            if node_name in name or name in node_name:
+                return name
+        return None
     
     def update_learning_rates(self, S_set: Set[int], T_set: Set[int],
                               cut_edges: List[Tuple[int, int]],
                               capacity_matrix: np.ndarray,
-                              graph_builder, flow_deficit: float = 0.0):
+                              graph_builder, flow_deficit: float = 0.0,
+                              flow_dict: Optional[Dict] = None, max_flow: float = 0.0,
+                              epoch: int = 0):
         self.step_count += 1
         
-        total_potential = np.sum(capacity_matrix[graph_builder.source, :])
-        max_flow = total_potential * (1 - flow_deficit)
+        # 记录日志
+        if self.logger and flow_dict is not None:
+            self.logger.log_step(self.step_count, epoch, cut_edges, flow_dict,
+                                capacity_matrix, S_set, T_set, graph_builder,
+                                max_flow, flow_deficit)
         
-        # 准备日志数据
-        log_data = {
-            'graph_info': {
-                'num_nodes': graph_builder.num_nodes,
-                'num_layers': len(graph_builder.layer_names),
-                'blocks_per_layer': {name: len([k for k in graph_builder.node_map if k[0] == name]) 
-                                     for name in graph_builder.layer_names}
-            },
-            'flow_info': {
-                'total_potential': float(total_potential),
-                'max_flow': float(max_flow),
-                'flow_deficit': float(flow_deficit),
-                's_size': len(S_set),
-                't_size': len(T_set)
-            },
-            'cut_edges': [],
-            'bottlenecks': [],
-            'lr_updates': {},
-            'max_flow': float(max_flow),
-            'flow_deficit': float(flow_deficit)
-        }
-        
-        # 记录cut edges
-        for u, v in cut_edges[:20]:
-            u_name = graph_builder.get_node_name(u)
-            v_name = graph_builder.get_node_name(v)
-            cap = capacity_matrix[u][v]
-            log_data['cut_edges'].append(f"{u_name} -> {v_name} (cap={cap:.3f})")
-        
-        # Debug输出（保留原有的控制台输出）
+        # Debug输出
         if self.debug and self.step_count % 10 == 0:
-            print(f"\n[PFN Debug] Step {self.step_count}")
-            print(f"  Total Potential Flow: {total_potential:.4f}, Flow Deficit: {flow_deficit:.4f}")
-            print(f"  Graph: {len(S_set)} in S, {len(T_set)} in T, {len(cut_edges)} cut edges")
+            total_potential = np.sum(capacity_matrix[graph_builder.source, :])
+            print(f"\n[PFN-Joint] Step {self.step_count}")
+            print(f"  Potential: {total_potential:.4f} | S={len(S_set)} T={len(T_set)}")
             
             bottleneck_names = []
-            for u, v in cut_edges[:3]:
+            for u, v in cut_edges[:5]:
                 u_name = graph_builder.get_node_name(u)
                 v_name = graph_builder.get_node_name(v)
-                cap = capacity_matrix[u][v]
-                bottleneck_names.append(f"{u_name}->{v_name}({cap:.2f})")
+                bottleneck_names.append(f"{u_name}->{v_name}")
             if bottleneck_names:
-                print(f"  Top Bottlenecks: {bottleneck_names}")
+                print(f"  Cuts: {bottleneck_names}")
         
         # 识别当前瓶颈节点
         current_bottlenecks = set()
@@ -544,84 +525,62 @@ class BottleneckOptimizer:
                 param_name = self._node_to_param_group(node_name)
                 if param_name:
                     current_bottlenecks.add(param_name)
-                    log_data['bottlenecks'].append(param_name)
             if u != graph_builder.source:
                 node_name = graph_builder.get_node_name(u)
                 param_name = self._node_to_param_group(node_name)
                 if param_name:
                     current_bottlenecks.add(param_name)
-                    if param_name not in log_data['bottlenecks']:
-                        log_data['bottlenecks'].append(param_name)
         
-        # 更新持续瓶颈计数
-        for name in self.name_to_idx:
-            if name in current_bottlenecks:
-                self.persistent_bottleneck[name] += 1
-            else:
-                self.persistent_bottleneck[name] = max(0, self.persistent_bottleneck[name] - 1)
-        
-        # 计算目标LR
+        # 修改方案1：累积补偿机制
         boosted_names = []
         for name in self.name_to_idx:
             if 'bn' in name.lower():
                 continue
             
-            idx = self.name_to_idx[name]
-            old_lr = self.optimizer.param_groups[idx]['lr']
-            
             if name in current_bottlenecks:
-                persistence = min(self.persistent_bottleneck[name], 10)
-                dynamic_boost = self.base_boost * (1.0 + 0.1 * persistence)
-                dynamic_boost = min(dynamic_boost, self.max_boost)
+                # 累积计数
+                self.persistent_bottleneck[name] += 1
+                persistence = self.persistent_bottleneck[name]
                 
-                target = self.base_lr * dynamic_boost * (1.0 + min(flow_deficit, 0.5))
-                target = min(target, self.base_lr * self.max_boost)
+                # 核心修改：指数级累积增益
+                # dynamic_boost = base_boost * (accumulated_boost ^ (persistence - 1))
+                accumulated_factor = self.accumulated_boost ** (persistence - 1)
+                accumulated_factor = min(accumulated_factor, self.max_accumulated_boost / self.base_boost)
+                
+                dynamic_boost = self.base_boost * accumulated_factor
+                dynamic_boost = min(dynamic_boost, self.max_boost * (1 + persistence * 0.1))  # 允许突破max_boost
+                
+                # 额外考虑flow_deficit
+                target = self.base_lr * dynamic_boost * (1.0 + min(flow_deficit, 0.8))
                 
                 self.target_lrs[name] = target
                 self.boost_counts[name] += 1
-                boosted_names.append(f"{name[:15]}({target:.5f})")
-                
-                log_data['lr_updates'][name] = {
-                    'old': float(old_lr),
-                    'new': float(target),
-                    'boosted': True,
-                    'boost_factor': float(dynamic_boost),
-                    'persistence': persistence
-                }
+                boosted_names.append(f"{name[:12]}(p={persistence},b={dynamic_boost:.1f})")
             else:
+                # 离开最小割：重置计数，缓慢恢复
+                self.persistent_bottleneck[name] = 0
                 current_target = self.target_lrs.get(name, self.base_lr)
-                new_target = current_target * self.decay_factor + self.base_lr * (1 - self.decay_factor)
-                self.target_lrs[name] = new_target
-                
-                log_data['lr_updates'][name] = {
-                    'old': float(old_lr),
-                    'new': float(new_target),
-                    'boosted': False
-                }
+                # 更快的衰减，让资源流向新瓶颈
+                self.target_lrs[name] = current_target * 0.85 + self.base_lr * 0.15
         
-        # 平滑LR变化
+        # 使用动量平滑实际LR变化（降低动量以更快响应)
+        effective_momentum = max(0.5, self.lr_momentum - 0.1 * (self.step_count // 100))
+        
         for name, idx in self.name_to_idx.items():
             if 'bn' in name.lower():
                 continue
+            
             current_lr = self.optimizer.param_groups[idx]['lr']
             target_lr = self.target_lrs.get(name, self.base_lr)
-            new_lr = self.lr_momentum * current_lr + (1 - self.lr_momentum) * target_lr
+            new_lr = effective_momentum * current_lr + (1 - effective_momentum) * target_lr
             self.optimizer.param_groups[idx]['lr'] = new_lr
-            
-            # 更新日志中的实际新LR
-            if name in log_data['lr_updates']:
-                log_data['lr_updates'][name]['actual_new'] = float(new_lr)
         
         if self.debug and self.step_count % 10 == 0 and boosted_names:
-            print(f"  Boosted ({len(boosted_names)}): {boosted_names[:3]}...")
-        
-        # 记录到日志
-        if self.logger:
-            self.logger.log_step(self.step_count, self.current_epoch, log_data)
+            print(f"  Boosted: {boosted_names[:4]}")
         
         self.bottleneck_history.append([
             f"{graph_builder.get_node_name(u)}->{graph_builder.get_node_name(v)}" 
-            for u, v in cut_edges[:5]
+            for u, v in cut_edges
         ])
     
     def apply_gradient_clipping(self, model, T_set: Set[int], graph_builder):
@@ -635,7 +594,7 @@ class BottleneckOptimizer:
     
     def get_statistics(self) -> Dict:
         return {
-            'bottleneck_history': self.bottleneck_history[-100:],  # 只保留最近100条
+            'bottleneck_history': self.bottleneck_history,
             'boost_counts': dict(self.boost_counts),
             'persistent_bottleneck': dict(self.persistent_bottleneck)
         }

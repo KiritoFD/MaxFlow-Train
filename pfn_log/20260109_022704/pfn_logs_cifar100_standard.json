@@ -1,0 +1,3463 @@
+{
+  "metadata": {
+    "start_time": "20260109_022704",
+    "total_epochs": 200,
+    "end_time": "2026-01-09T04:37:37.856730",
+    "dataset": "cifar100",
+    "scenario": "standard"
+  },
+  "epochs": {
+    "epoch_0": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 2,
+          "steps": [
+            1,
+            2
+          ]
+        }
+      ],
+      "total_steps": 2,
+      "unique_bottlenecks": 1
+    },
+    "epoch_1": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.5999999919999999,
+          "count": 3,
+          "steps": [
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_2": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            6,
+            7,
+            8
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_3": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            9,
+            10,
+            11,
+            12
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_4": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            13,
+            14,
+            15
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_5": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            16,
+            17,
+            18
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_6": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            19,
+            20,
+            21
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_7": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            22,
+            23,
+            24,
+            25
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_8": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            26,
+            27,
+            28
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_9": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            29,
+            30,
+            31
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_10": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            32,
+            33,
+            34
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_11": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            35,
+            36,
+            37,
+            38
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_12": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            39,
+            40,
+            41
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_13": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            42,
+            43,
+            44
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_14": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            45,
+            46,
+            47
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_15": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            48,
+            49,
+            50,
+            51
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_16": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            52,
+            53,
+            54
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_17": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            55,
+            56,
+            57
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_18": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            58,
+            59,
+            60,
+            61
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_19": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            62,
+            63,
+            64
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_20": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            65,
+            66,
+            67
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_21": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            68,
+            69,
+            70
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_22": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            71,
+            72,
+            73,
+            74
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_23": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            75,
+            76,
+            77
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_24": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            78,
+            79,
+            80
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_25": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            81,
+            82,
+            83
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_26": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            84,
+            85,
+            86,
+            87
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_27": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            88,
+            89,
+            90
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_28": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            91,
+            92,
+            93
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_29": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            94,
+            95,
+            96
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_30": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            97,
+            98,
+            99,
+            100
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_31": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            101,
+            102,
+            103
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_32": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            104,
+            105,
+            106
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_33": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            107,
+            108,
+            109,
+            110
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_34": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            111,
+            112,
+            113
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_35": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            114,
+            115,
+            116
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_36": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            117,
+            118,
+            119
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_37": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            120,
+            121,
+            122,
+            123
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_38": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            124,
+            125,
+            126
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_39": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            127,
+            128,
+            129
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_40": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            130,
+            131,
+            132
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_41": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            133,
+            134,
+            135,
+            136
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_42": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            137,
+            138,
+            139
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_43": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            140,
+            141,
+            142
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_44": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            143,
+            144,
+            145
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_45": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            146,
+            147,
+            148,
+            149
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_46": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            150,
+            151,
+            152
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_47": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            153,
+            154,
+            155
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_48": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            156,
+            157,
+            158,
+            159
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_49": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            160,
+            161,
+            162
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_50": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            163,
+            164,
+            165
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_51": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            166,
+            167,
+            168
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_52": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            169,
+            170,
+            171,
+            172
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_53": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            173,
+            174,
+            175
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_54": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            176,
+            177,
+            178
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_55": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            179,
+            180,
+            181
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_56": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            182,
+            183,
+            184,
+            185
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_57": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            186,
+            187,
+            188
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_58": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            189,
+            190,
+            191
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_59": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            192,
+            193,
+            194
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_60": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            195,
+            196,
+            197,
+            198
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_61": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            199,
+            200,
+            201
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_62": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            202,
+            203,
+            204
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_63": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            205,
+            206,
+            207,
+            208
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_64": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            209,
+            210,
+            211
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_65": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            212,
+            213,
+            214
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_66": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            215,
+            216,
+            217
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_67": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            218,
+            219,
+            220,
+            221
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_68": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            222,
+            223,
+            224
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_69": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            225,
+            226,
+            227
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_70": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            228,
+            229,
+            230
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_71": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            231,
+            232,
+            233,
+            234
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_72": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            235,
+            236,
+            237
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_73": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            238,
+            239,
+            240
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_74": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            241,
+            242,
+            243
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_75": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            244,
+            245,
+            246,
+            247
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_76": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            248,
+            249,
+            250
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_77": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            251,
+            252,
+            253
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_78": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            254,
+            255,
+            256,
+            257
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_79": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            258,
+            259,
+            260
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_80": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            261,
+            262,
+            263
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_81": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            264,
+            265,
+            266
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_82": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            267,
+            268,
+            269,
+            270
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_83": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            271,
+            272,
+            273
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_84": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            274,
+            275,
+            276
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_85": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            277,
+            278,
+            279
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_86": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            280,
+            281,
+            282,
+            283
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_87": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            284,
+            285,
+            286
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_88": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            287,
+            288,
+            289
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_89": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            290,
+            291,
+            292
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_90": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            293,
+            294,
+            295,
+            296
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_91": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            297,
+            298,
+            299
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_92": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            300,
+            301,
+            302
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_93": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            303,
+            304,
+            305,
+            306
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_94": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            307,
+            308,
+            309
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_95": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            310,
+            311,
+            312
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_96": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            313,
+            314,
+            315
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_97": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            316,
+            317,
+            318,
+            319
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_98": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            320,
+            321,
+            322
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_99": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            323,
+            324,
+            325
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_100": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            326,
+            327,
+            328
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_101": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            329,
+            330,
+            331,
+            332
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_102": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            333,
+            334,
+            335
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_103": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            336,
+            337,
+            338
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_104": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            339,
+            340,
+            341
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_105": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            342,
+            343,
+            344,
+            345
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_106": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            346,
+            347,
+            348
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_107": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            349,
+            350,
+            351
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_108": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            352,
+            353,
+            354,
+            355
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_109": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            356,
+            357,
+            358
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_110": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            359,
+            360,
+            361
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_111": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            362,
+            363,
+            364
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_112": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            365,
+            366,
+            367,
+            368
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_113": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            369,
+            370,
+            371
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_114": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            372,
+            373,
+            374
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_115": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            375,
+            376,
+            377
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_116": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            378,
+            379,
+            380,
+            381
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_117": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            382,
+            383,
+            384
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_118": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            385,
+            386,
+            387
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_119": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            388,
+            389,
+            390
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_120": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            391,
+            392,
+            393,
+            394
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_121": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            395,
+            396,
+            397
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_122": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            398,
+            399,
+            400
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_123": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            401,
+            402,
+            403,
+            404
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_124": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            405,
+            406,
+            407
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_125": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            408,
+            409,
+            410
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_126": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            411,
+            412,
+            413
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_127": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            414,
+            415,
+            416,
+            417
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_128": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            418,
+            419,
+            420
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_129": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            421,
+            422,
+            423
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_130": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            424,
+            425,
+            426
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_131": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            427,
+            428,
+            429,
+            430
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_132": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            431,
+            432,
+            433
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_133": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            434,
+            435,
+            436
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_134": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            437,
+            438,
+            439
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_135": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            440,
+            441,
+            442,
+            443
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_136": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            444,
+            445,
+            446
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_137": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            447,
+            448,
+            449
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_138": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            450,
+            451,
+            452,
+            453
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_139": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            454,
+            455,
+            456
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_140": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            457,
+            458,
+            459
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_141": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            460,
+            461,
+            462
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_142": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            463,
+            464,
+            465,
+            466
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_143": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            467,
+            468,
+            469
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_144": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            470,
+            471,
+            472
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_145": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            473,
+            474,
+            475
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_146": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            476,
+            477,
+            478,
+            479
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_147": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            480,
+            481,
+            482
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_148": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            483,
+            484,
+            485
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_149": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            486,
+            487,
+            488
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_150": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            489,
+            490,
+            491,
+            492
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_151": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            493,
+            494,
+            495
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_152": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            496,
+            497,
+            498
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_153": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            499,
+            500,
+            501,
+            502
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_154": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            503,
+            504,
+            505
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_155": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            506,
+            507,
+            508
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_156": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            509,
+            510,
+            511
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_157": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            512,
+            513,
+            514,
+            515
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_158": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            516,
+            517,
+            518
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_159": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            519,
+            520,
+            521
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_160": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            522,
+            523,
+            524
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_161": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            525,
+            526,
+            527,
+            528
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_162": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            529,
+            530,
+            531
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_163": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            532,
+            533,
+            534
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_164": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            535,
+            536,
+            537
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_165": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            538,
+            539,
+            540,
+            541
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_166": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            542,
+            543,
+            544
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_167": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            545,
+            546,
+            547
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_168": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            548,
+            549,
+            550,
+            551
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_169": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            552,
+            553,
+            554
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_170": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            555,
+            556,
+            557
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_171": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            558,
+            559,
+            560
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_172": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            561,
+            562,
+            563,
+            564
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_173": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            565,
+            566,
+            567
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_174": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            568,
+            569,
+            570
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_175": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            571,
+            572,
+            573
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_176": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            574,
+            575,
+            576,
+            577
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_177": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            578,
+            579,
+            580
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_178": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            581,
+            582,
+            583
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_179": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            584,
+            585,
+            586
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_180": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            587,
+            588,
+            589,
+            590
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_181": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            591,
+            592,
+            593
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_182": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            594,
+            595,
+            596
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_183": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            597,
+            598,
+            599,
+            600
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_184": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            601,
+            602,
+            603
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_185": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            604,
+            605,
+            606
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_186": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            607,
+            608,
+            609
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_187": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            610,
+            611,
+            612,
+            613
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_188": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            614,
+            615,
+            616
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_189": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            617,
+            618,
+            619
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_190": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            620,
+            621,
+            622
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_191": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            623,
+            624,
+            625,
+            626
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_192": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            627,
+            628,
+            629
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_193": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            630,
+            631,
+            632
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_194": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            633,
+            634,
+            635
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_195": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            636,
+            637,
+            638,
+            639
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_196": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            640,
+            641,
+            642
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_197": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            643,
+            644,
+            645
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    },
+    "epoch_198": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 4,
+          "steps": [
+            646,
+            647,
+            648,
+            649
+          ]
+        }
+      ],
+      "total_steps": 4,
+      "unique_bottlenecks": 1
+    },
+    "epoch_199": {
+      "critical_cuts": [
+        {
+          "from": "fc_block0",
+          "to": "Sink",
+          "capacity": 1.599999992,
+          "count": 3,
+          "steps": [
+            650,
+            651,
+            652
+          ]
+        }
+      ],
+      "total_steps": 3,
+      "unique_bottlenecks": 1
+    }
+  }
+}

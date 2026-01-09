@@ -1,0 +1,12 @@
+{
+  "results": [
+    {
+      "name": "2.Bottleneck",
+      "baseline": 0.4289,
+      "pfn": 0.5329,
+      "improvement": 0.10400000000000004
+    }
+  ],
+  "avg": 0.10400000000000004,
+  "wins": 1
+}

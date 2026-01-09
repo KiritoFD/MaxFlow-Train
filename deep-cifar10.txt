@@ -1,0 +1,18 @@
+     
+    train:  49%|███████████████▋                | 48/98 [00:19<00:33,  1.47it/s]^C
+Traceback (most recent call last):                                              
+  File "/kaggle/working/results_20260106_194903/cifar10_e150_b512/3.Deep/run_experiment.py", line 467, in <module>
+    run_experiment(ds, args.cpu, args.scenarios, epochs_override=ep, batch_override=bs)
+  File "/kaggle/working/results_20260106_194903/cifar10_e150_b512/3.Deep/run_experiment.py", line 400, in run_experiment
+    results.append(run_scenario(dataset, scenario_cfg, epochs, batch, device, results_dir))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/results_20260106_194903/cifar10_e150_b512/3.Deep/run_experiment.py", line 353, in run_scenario
+    pfn_acc, pfn_loss, pfn_acc_hist = train_model(config, device, True)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/results_20260106_194903/cifar10_e150_b512/3.Deep/run_experiment.py", line 314, in train_model
+    loss, step = train_epoch(model, train_loader, opt, nn.CrossEntropyLoss(), device, pfn, step, ep, config['epochs'])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/results_20260106_194903/cifar10_e150_b512/3.Deep/run_experiment.py", line 260, in train_epoch
+    total_loss += loss.item()
+                  ^^^^^^^^^^^
+KeyboardInterrupt

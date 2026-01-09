@@ -1,0 +1,55 @@
+{
+  "dataset": "cifar10",
+  "scenario": "bottleneck",
+  "total_unique_bottlenecks": 6,
+  "bottlenecks": [
+    {
+      "node": "enc1_block0",
+      "appearance_count": 31,
+      "first_epoch": 0,
+      "last_epoch": 4,
+      "epoch_span": 5,
+      "persistence": "620.0%"
+    },
+    {
+      "node": "enc1_block1",
+      "appearance_count": 29,
+      "first_epoch": 0,
+      "last_epoch": 4,
+      "epoch_span": 5,
+      "persistence": "580.0%"
+    },
+    {
+      "node": "enc2_block1",
+      "appearance_count": 2,
+      "first_epoch": 0,
+      "last_epoch": 1,
+      "epoch_span": 2,
+      "persistence": "100.0%"
+    },
+    {
+      "node": "enc2_block2",
+      "appearance_count": 2,
+      "first_epoch": 0,
+      "last_epoch": 1,
+      "epoch_span": 2,
+      "persistence": "100.0%"
+    },
+    {
+      "node": "enc2_block3",
+      "appearance_count": 2,
+      "first_epoch": 0,
+      "last_epoch": 1,
+      "epoch_span": 2,
+      "persistence": "100.0%"
+    },
+    {
+      "node": "bottleneck_block0",
+      "appearance_count": 2,
+      "first_epoch": 0,
+      "last_epoch": 1,
+      "epoch_span": 2,
+      "persistence": "100.0%"
+    }
+  ]
+}

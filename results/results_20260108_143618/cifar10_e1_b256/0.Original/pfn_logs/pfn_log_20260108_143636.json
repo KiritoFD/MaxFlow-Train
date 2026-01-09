@@ -1,0 +1,75 @@
+{
+  "timestamp": "20260108_143636",
+  "cut_history": [
+    {
+      "step": 150,
+      "epoch": 0,
+      "timestamp": "2026-01-08T14:36:45.316861",
+      "max_flow": 0.6221947751791908,
+      "total_capacity": 0.6605488566673362,
+      "S_size": 7,
+      "T_size": 4,
+      "num_cut_edges": 1,
+      "cut_edges": [
+        {
+          "from": "conv5_block0",
+          "to": "conv6_block0",
+          "capacity": 0.6221947751791908
+        }
+      ],
+      "S_nodes": [
+        "conv0_block0",
+        "conv1_block0",
+        "conv2_block0",
+        "conv3_block0",
+        "conv4_block0",
+        "conv5_block0",
+        "node_0"
+      ],
+      "T_nodes": [
+        "classifier_block0",
+        "conv6_block0",
+        "conv7_block0",
+        "node_10"
+      ]
+    }
+  ],
+  "flow_history": [],
+  "lr_history": [
+    {
+      "step": 1,
+      "epoch": 0,
+      "timestamp": "2026-01-08T14:36:45.316861",
+      "learning_rates": {
+        "conv0_block0": 0.0001,
+        "conv1_block0": 0.0001,
+        "conv2_block0": 0.0001,
+        "conv3_block0": 0.0001,
+        "conv4_block0": 0.0001,
+        "conv5_block0": 0.0001,
+        "conv6_block0": 0.0001,
+        "conv7_block0": 0.0001,
+        "classifier_block0": 0.0001
+      }
+    }
+  ],
+  "bottleneck_history": [
+    {
+      "step": 1,
+      "epoch": 0,
+      "timestamp": "2026-01-08T14:36:45.316861",
+      "bottleneck_nodes": {
+        "conv5_block0": 0.00015000000000000001,
+        "conv6_block0": 0.00015000000000000001
+      }
+    }
+  ],
+  "epoch_summary": [
+    {
+      "epoch": 0,
+      "loss": 1.9414534720839287,
+      "accuracy": 0.3626,
+      "timestamp": "2026-01-08T14:36:52.298461"
+    }
+  ]
+}

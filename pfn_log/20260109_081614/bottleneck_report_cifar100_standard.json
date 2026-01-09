@@ -1,0 +1,143 @@
+{
+  "dataset": "cifar100",
+  "scenario": "standard",
+  "total_unique_bottlenecks": 17,
+  "bottlenecks": [
+    {
+      "node": "dec1_block1",
+      "appearance_count": 45,
+      "first_epoch": 15,
+      "last_epoch": 154,
+      "epoch_span": 140,
+      "persistence": "32.1%"
+    },
+    {
+      "node": "enc1_block0",
+      "appearance_count": 39,
+      "first_epoch": 1,
+      "last_epoch": 194,
+      "epoch_span": 194,
+      "persistence": "20.1%"
+    },
+    {
+      "node": "dec1_block0",
+      "appearance_count": 30,
+      "first_epoch": 15,
+      "last_epoch": 154,
+      "epoch_span": 140,
+      "persistence": "21.4%"
+    },
+    {
+      "node": "enc2_block1",
+      "appearance_count": 24,
+      "first_epoch": 1,
+      "last_epoch": 194,
+      "epoch_span": 194,
+      "persistence": "12.4%"
+    },
+    {
+      "node": "enc2_block2",
+      "appearance_count": 24,
+      "first_epoch": 1,
+      "last_epoch": 194,
+      "epoch_span": 194,
+      "persistence": "12.4%"
+    },
+    {
+      "node": "enc2_block3",
+      "appearance_count": 24,
+      "first_epoch": 1,
+      "last_epoch": 194,
+      "epoch_span": 194,
+      "persistence": "12.4%"
+    },
+    {
+      "node": "bottleneck_block0",
+      "appearance_count": 24,
+      "first_epoch": 1,
+      "last_epoch": 194,
+      "epoch_span": 194,
+      "persistence": "12.4%"
+    },
+    {
+      "node": "dec2_block0",
+      "appearance_count": 15,
+      "first_epoch": 15,
+      "last_epoch": 154,
+      "epoch_span": 140,
+      "persistence": "10.7%"
+    },
+    {
+      "node": "layer1_block2",
+      "appearance_count": 12,
+      "first_epoch": 11,
+      "last_epoch": 150,
+      "epoch_span": 140,
+      "persistence": "8.6%"
+    },
+    {
+      "node": "layer2_block2",
+      "appearance_count": 12,
+      "first_epoch": 11,
+      "last_epoch": 150,
+      "epoch_span": 140,
+      "persistence": "8.6%"
+    },
+    {
+      "node": "layer3_block3",
+      "appearance_count": 8,
+      "first_epoch": 11,
+      "last_epoch": 150,
+      "epoch_span": 140,
+      "persistence": "5.7%"
+    },
+    {
+      "node": "layer2_block3",
+      "appearance_count": 8,
+      "first_epoch": 52,
+      "last_epoch": 150,
+      "epoch_span": 99,
+      "persistence": "8.1%"
+    },
+    {
+      "node": "layer0_block0",
+      "appearance_count": 6,
+      "first_epoch": 11,
+      "last_epoch": 150,
+      "epoch_span": 140,
+      "persistence": "4.3%"
+    },
+    {
+      "node": "layer0_block1",
+      "appearance_count": 6,
+      "first_epoch": 11,
+      "last_epoch": 150,
+      "epoch_span": 140,
+      "persistence": "4.3%"
+    },
+    {
+      "node": "layer1_block1",
+      "appearance_count": 6,
+      "first_epoch": 11,
+      "last_epoch": 150,
+      "epoch_span": 140,
+      "persistence": "4.3%"
+    },
+    {
+      "node": "layer3_block2",
+      "appearance_count": 2,
+      "first_epoch": 11,
+      "last_epoch": 36,
+      "epoch_span": 26,
+      "persistence": "7.7%"
+    },
+    {
+      "node": "layer4_block6",
+      "appearance_count": 2,
+      "first_epoch": 11,
+      "last_epoch": 36,
+      "epoch_span": 26,
+      "persistence": "7.7%"
+    }
+  ]
+}

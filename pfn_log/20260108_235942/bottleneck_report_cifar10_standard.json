@@ -1,0 +1,71 @@
+{
+  "dataset": "cifar10",
+  "scenario": "standard",
+  "total_unique_bottlenecks": 8,
+  "bottlenecks": [
+    {
+      "node": "conv1_block1",
+      "appearance_count": 325,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "650.0%"
+    },
+    {
+      "node": "conv1_block2",
+      "appearance_count": 325,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "650.0%"
+    },
+    {
+      "node": "conv1_block3",
+      "appearance_count": 325,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "650.0%"
+    },
+    {
+      "node": "conv2_block0",
+      "appearance_count": 230,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "460.0%"
+    },
+    {
+      "node": "conv2_block1",
+      "appearance_count": 230,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "460.0%"
+    },
+    {
+      "node": "conv2_block2",
+      "appearance_count": 230,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "460.0%"
+    },
+    {
+      "node": "conv3_block0",
+      "appearance_count": 230,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "460.0%"
+    },
+    {
+      "node": "conv1_block0",
+      "appearance_count": 95,
+      "first_epoch": 150,
+      "last_epoch": 199,
+      "epoch_span": 50,
+      "persistence": "190.0%"
+    }
+  ]
+}
